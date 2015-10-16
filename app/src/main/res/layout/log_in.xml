@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textEmailAddress"
+        android:ems="10"
+        android:id="@+id/email"
+        android:width="200dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="90dp"
+        android:layout_marginRight="15dp"
+        android:hint="abd@def.com" />
+
+    <EditText
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:inputType="textPassword"
+        android:ems="10"
+        android:id="@+id/password"
+        android:width="200dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="20dp"
+        android:layout_marginRight="15dp"
+        android:hint="at least 8 digits"
+        android:layout_below="@+id/email" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/login"
+        android:id="@+id/registerButton"
+        android:layout_below="@+id/password"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="35dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="E Mail"
+        android:id="@+id/emailText"
+        android:layout_alignTop="@+id/email"
+        android:layout_alignBottom="@+id/email"
+        android:gravity="center_vertical"
+        android:layout_toLeftOf="@+id/email"
+        android:layout_marginRight="20dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:text="Password"
+        android:id="@+id/passwordText"
+        android:layout_alignTop="@+id/password"
+        android:layout_alignBottom="@+id/password"
+        android:gravity="center_vertical"
+        android:layout_toLeftOf="@+id/password"
+        android:layout_toStartOf="@+id/password"
+        android:layout_marginRight="20dp" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/imageView"
+        android:layout_marginTop="50dp"
+        android:layout_below="@+id/registerButton"
+        android:layout_alignParentLeft="false"
+        android:layout_alignParentStart="false"
+        android:src = "@drawable/food"/>
+
+</RelativeLayout>
