@@ -8,4 +8,8 @@
     <string name="re_password">Password</string>
     <string name="registerButton">Register</string>
     <string name="login">Log In</string>
+
+<!--Begin:Home Activity-->
+    <string name="cook_book_button">Cook Book</string>
+<!-- End: Home Activity-->
 </resources>
