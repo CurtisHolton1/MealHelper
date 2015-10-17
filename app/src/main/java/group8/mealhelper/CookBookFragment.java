@@ -7,20 +7,18 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
-import java.util.List;
 
-import group8.mealhelper.models.Meal;
 
 /**
  * Created by curtis on 10/16/15.
  */
 public class CookBookFragment extends Fragment implements View.OnClickListener {
-    private List<Meal> mMealList;
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
     }
 
     @Override
