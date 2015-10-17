@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Welcome to MealHelper</string>
+    <string name="app_name">MealHelper</string>
     <string name="action_settings">Settings</string>
     <string name="username">User Name</string>
     <string name="email">Email</string>
@@ -9,7 +9,12 @@
     <string name="registerButton">Register</string>
     <string name="login">Log In</string>
 
-<!--Begin:Home Activity-->
-    <string name="cook_book_button">Cook Book</string>
-<!-- End: Home Activity-->
+<!--Begin:HomeActivity-->
+    <string name="home_cookBookButton">Cook Book</string>
+<!-- End: HomeActivity-->
+
+<!--Begin:CookBookActivity-->
+    <string name="cookBook_addNewButton">Add New</string>
+<!-- End: CookBookActivity-->
+
 </resources>
