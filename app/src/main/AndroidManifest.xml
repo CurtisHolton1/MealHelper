@@ -20,6 +20,8 @@
         </activity>
         <activity android:name=".CookBookActivity" >
         </activity>
+        <activity android:name=".AddMealActivity">
+        </activity>
 
     </application>
 

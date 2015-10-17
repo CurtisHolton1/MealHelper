@@ -1,5 +1,6 @@
 package group8.mealhelper;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -7,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import group8.mealhelper.models.Meal;
 
 
 /**
@@ -34,7 +36,8 @@ public class CookBookFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch ((v.getId())) {
             case R.id.cookBook_addNewButton:
-
+                Intent i = new Intent(getActivity(), AddMealActivity.class);
+                startActivity(i);
                 break;
         }
     }
