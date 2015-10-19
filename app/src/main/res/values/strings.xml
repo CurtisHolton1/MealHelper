@@ -9,12 +9,16 @@
     <string name="registerButton">Register</string>
     <string name="login">Log In</string>
 
-<!--Begin:HomeActivity-->
+<!--Begin: Home-->
     <string name="home_cookBookButton">Cook Book</string>
-<!-- End: HomeActivity-->
+<!--End: Home-->
 
-<!--Begin:CookBookActivity-->
+<!--Begin: CookBook-->
     <string name="cookBook_addNewButton">Add New</string>
-<!-- End: CookBookActivity-->
+<!--End: CookBook-->
+
+<!--Begin: AddMeal-->
+    <string name="addMeal_cameraButton">Take Picture</string>
+<!--End: AddMeal-->
 
 </resources>

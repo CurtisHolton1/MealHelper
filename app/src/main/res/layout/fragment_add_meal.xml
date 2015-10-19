@@ -14,8 +14,21 @@
     <EditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/meal_name_editText"
+        android:id="@+id/addMeal_mealName_EditText"
         android:layout_gravity="center_horizontal"
         android:singleLine="true"
         />
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:id="@+id/addMeal_imageView"
+        />
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/addMeal_cameraButton"
+        android:id="@+id/addMeal_cameraButton"
+        android:layout_weight="0.05"/>
 </LinearLayout>
