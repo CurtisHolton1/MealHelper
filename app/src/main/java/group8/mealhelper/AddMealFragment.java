@@ -40,9 +40,9 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
     static final int REQUEST_IMAGE_CAPTURE = 1;
     public final static String APP_PATH_SD_CARD = "/MealHelper";
     String mCurrentPhotoPath = null;
-    ImageView mImageView = null;
-    Bitmap mImageBitmap = null;
     String mMealName = null;
+    ImageView mImageView = null;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -100,44 +100,36 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
 
     public void onActivityResult(int requestCode, int resultCode, Intent cameraIntent) {
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_CAPTURED) {
-            setPic();
+             setPic();
         }
     }
-
-        private File createImageFile() throws IOException {
-            // Create an image file name
-            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-            String imageFileName = "JPEG_" + timeStamp + "_";
-            String storageDir = Environment.getExternalStorageDirectory().getAbsolutePath();
-            File mealDir = new File(storageDir + "/MealHelper");
-            File image = File.createTempFile(
-                    imageFileName,  /* prefix */
-                    ".jpg",         /* suffix */
-                    mealDir      /* directory */
-            );
-            mCurrentPhotoPath = image.getAbsolutePath();
-            return image;
+    private File createImageFile() throws IOException {
+        // Create an image file name
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "JPEG_" + timeStamp + "_";
+        String storageDir = Environment.getExternalStorageDirectory().getAbsolutePath();
+        File mealDir = new File(storageDir + APP_PATH_SD_CARD);
+        File image = File.createTempFile(imageFileName, ".jpg", mealDir);
+        mCurrentPhotoPath = image.getAbsolutePath();
+        return image;
         }
+
     private void setPic() {
         // Get the dimensions of the View
         int targetW = mImageView.getWidth();
         int targetH = mImageView.getHeight();
-
         // Get the dimensions of the bitmap
         BitmapFactory.Options bmOptions = new BitmapFactory.Options();
         bmOptions.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
         int photoW = bmOptions.outWidth;
         int photoH = bmOptions.outHeight;
-
         // Determine how much to scale down the image
         int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
-
         // Decode the image file into a Bitmap sized to fill the View
         bmOptions.inJustDecodeBounds = false;
         bmOptions.inSampleSize = scaleFactor;
         bmOptions.inPurgeable = true;
-
         Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
         mImageView.setImageBitmap(bitmap);
     }
