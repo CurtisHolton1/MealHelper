@@ -3,9 +3,11 @@ package group8.mealhelper;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -22,6 +24,7 @@ import android.widget.TextView;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -34,8 +37,10 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
             .getClass()
             .getSimpleName().toUpperCase();
     public static int IMAGE_CAPTURED = 1;
+    static final int REQUEST_IMAGE_CAPTURE = 1;
     public final static String APP_PATH_SD_CARD = "/MealHelper";
-    ImageView imageView = null;
+    String mCurrentPhotoPath = null;
+    ImageView mImageView = null;
     Bitmap mImageBitmap = null;
     String mMealName = null;
 
@@ -68,7 +73,7 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
         });
         Button cameraButton = (Button) v.findViewById(R.id.addMeal_cameraButton);
         cameraButton.setOnClickListener(this);
-        imageView = (ImageView) v.findViewById(R.id.addMeal_imageView);
+        mImageView = (ImageView) v.findViewById(R.id.addMeal_imageView);
         return v;
     }
 
@@ -78,40 +83,57 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.addMeal_cameraButton:
                 Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-                startActivityForResult(cameraIntent, IMAGE_CAPTURED);
+                File photoFile = null;
+                try {
+                    photoFile = createImageFile();
+                } catch (IOException ex) {
+                    Log.d(TAG, "Exception onActivityResult");
+                }
+                if(photoFile != null) {
+                    cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
+                    startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);
+                    setPic();
+                }
                 break;
         }
     }
 
+        private File createImageFile() throws IOException {
+            // Create an image file name
+            String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+            String imageFileName = "JPEG_" + timeStamp + "_";
+            File storageDir = Environment.getExternalStorageDirectory();
 
-    public void onActivityResult(int requestCode, int resultCode, Intent cameraIntent) {
-        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_CAPTURED) {
-            Bundle extras = cameraIntent.getExtras();
-            mImageBitmap = (Bitmap) extras.get("data");
-            String fullPath = Environment.getExternalStorageDirectory().getAbsolutePath() + APP_PATH_SD_CARD;
-
-            try {
-                File dir = new File(fullPath);
-                if (!dir.exists()) {
-                    dir.mkdirs();
-                }
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd_HHmmss");
-                String currentDateandTime = sdf.format(new Date()).replace(" ","");
-                OutputStream fOut = null;
-                File file = new File(fullPath, currentDateandTime + ".png");
-                file.createNewFile();
-                fOut = new FileOutputStream(file);
-                ByteArrayOutputStream bytes = new ByteArrayOutputStream();
-                // 100 means no compression, the lower you go, the stronger the compression
-                mImageBitmap.compress(Bitmap.CompressFormat.PNG, 100, bytes);
-                fOut.write(bytes.toByteArray());
-                fOut.flush();
-                fOut.close();
-            }catch (Exception e){
-                Log.d(TAG, "Exception in AddMealFragment: onActivityResult");
-            }
-            imageView.setImageBitmap(mImageBitmap);
-            // imageBitmap=null;
+            File image = File.createTempFile(
+                    imageFileName,  /* prefix */
+                    ".jpg",         /* suffix */
+                    storageDir      /* directory */
+            );
+            mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+            return image;
         }
+    private void setPic() {
+        // Get the dimensions of the View
+        int targetW = mImageView.getWidth();
+        int targetH = mImageView.getHeight();
+
+        // Get the dimensions of the bitmap
+        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+        bmOptions.inJustDecodeBounds = true;
+        BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+        int photoW = bmOptions.outWidth;
+        int photoH = bmOptions.outHeight;
+
+        // Determine how much to scale down the image
+        int scaleFactor = Math.min(photoW/targetW, photoH/targetH);
+
+        // Decode the image file into a Bitmap sized to fill the View
+        bmOptions.inJustDecodeBounds = false;
+        bmOptions.inSampleSize = scaleFactor;
+        bmOptions.inPurgeable = true;
+
+        Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
+        mImageView.setImageBitmap(bitmap);
     }
-}
+    }
+
