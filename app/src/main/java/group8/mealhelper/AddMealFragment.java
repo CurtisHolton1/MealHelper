@@ -29,6 +29,8 @@ import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import group8.mealhelper.models.Units;
+
 /**
  * Created by curtis on 10/16/15.
  */
@@ -42,6 +44,7 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
     String mCurrentPhotoPath = null;
     String mMealName = null;
     ImageView mImageView = null;
+    Units mUnits = null;
 
 
     @Override
@@ -57,7 +60,6 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if(actionId== EditorInfo.IME_ACTION_DONE){
-                    //Clear focus here from edittext
                     mealNameField.clearFocus();
                 }
                 return false;
@@ -74,6 +76,7 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
         Button cameraButton = (Button) v.findViewById(R.id.addMeal_cameraButton);
         cameraButton.setOnClickListener(this);
         mImageView = (ImageView) v.findViewById(R.id.addMeal_imageView);
+        //mUnits = Units.get();
         return v;
     }
 
@@ -97,7 +100,7 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent cameraIntent) {
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_CAPTURED) {
              setPic();

@@ -9,6 +9,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
+import group8.mealhelper.database.DbHelper;
+
 /**
  * Created by curtis on 10/16/15.
  */
@@ -24,6 +26,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener{
         View v = inflater.inflate(R.layout.fragment_home, container, false);
         Button cookBook = (Button) v.findViewById(R.id.home_cookBookButton);
         cookBook.setOnClickListener(this);
+
         return v;
     }
 

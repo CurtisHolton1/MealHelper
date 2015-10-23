@@ -6,6 +6,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import group8.mealhelper.database.DbSchema.IngredientTable;
 import group8.mealhelper.database.DbSchema.MealTable;
+import group8.mealhelper.database.DbSchema.UnitTable;
 
 import static group8.mealhelper.database.DbSchema.*;
 
@@ -22,8 +23,10 @@ public class DbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db){
-        db.execSQL("create table" + MealTable.NAME + "(_id integer primary key autoincrement, " + MealTable.Cols.MEAL_ID + ", " + MealTable.Cols.NAME + ", " + MealTable.Cols.PIC_PATH + ")");
-
+        String statement = "create table " + MealTable.NAME + "( _id integer primary key autoincrement, " + MealTable.Cols.MEAL_ID + ", " + MealTable.Cols.NAME + ", " + MealTable.Cols.PIC_PATH + ")" ;
+        db.execSQL(statement);
+        statement = "create table " + UnitTable.NAME + "( _id integer primary key autoincrement, " + UnitTable.Cols.UNIT_ID + ", " + UnitTable.Cols.NAME + ")";
+        db.execSQL(statement);
     }
 
     @Override

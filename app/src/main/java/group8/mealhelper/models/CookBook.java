@@ -24,9 +24,7 @@ public class CookBook {
 
     private CookBook(Context context){
         context.getApplicationContext();
-        mDatabase = new DbHelper(mContext)
-                .getWritableDatabase();
-
+        mDatabase = new DbHelper(context).getWritableDatabase();
     }
 
     public void addMeal(Meal m){
