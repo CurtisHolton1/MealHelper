@@ -92,9 +92,15 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
                 if(photoFile != null) {
                     cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, Uri.fromFile(photoFile));
                     startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);
-                    setPic();
                 }
                 break;
+        }
+    }
+
+
+    public void onActivityResult(int requestCode, int resultCode, Intent cameraIntent) {
+        if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_CAPTURED) {
+            setPic();
         }
     }
 
@@ -102,14 +108,14 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
             // Create an image file name
             String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
             String imageFileName = "JPEG_" + timeStamp + "_";
-            File storageDir = Environment.getExternalStorageDirectory();
-
+            String storageDir = Environment.getExternalStorageDirectory().getAbsolutePath();
+            File mealDir = new File(storageDir + "/MealHelper");
             File image = File.createTempFile(
                     imageFileName,  /* prefix */
                     ".jpg",         /* suffix */
-                    storageDir      /* directory */
+                    mealDir      /* directory */
             );
-            mCurrentPhotoPath = "file:" + image.getAbsolutePath();
+            mCurrentPhotoPath = image.getAbsolutePath();
             return image;
         }
     private void setPic() {
