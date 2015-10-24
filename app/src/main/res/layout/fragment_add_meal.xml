@@ -109,7 +109,8 @@
                 android:layout_height="wrap_content"
                 android:id="@+id/addMeal_ingredientTable_editText"
                 android:layout_column="3"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                android:imeOptions="actionNext"/>
 
             <EditText
                 android:singleLine="true"
@@ -119,12 +120,13 @@
                 android:ems="10"
                 android:id="@+id/addMeal_ingredientTable_editText2"
                 android:layout_column="5"
-                android:layout_weight="1"/>
+                android:layout_weight="1"
+                />
 
             <Spinner
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/addMeal_spinner"
+                android:id="@+id/addMeal_ingredientTable_spinner"
                 android:layout_column="4"
                 android:layout_weight="1"
                 android:layout_gravity="center"/>
@@ -132,7 +134,7 @@
             <CheckBox
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:id="@+id/checkBox"
+                android:id="@+id/addMeal_ingredientTable_checkBox"
                 android:layout_column="7"
                 android:checked="false"
                 android:layout_weight="0.3"/>

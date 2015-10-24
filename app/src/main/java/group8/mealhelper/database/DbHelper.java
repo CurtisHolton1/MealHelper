@@ -24,7 +24,8 @@ public class DbHelper extends SQLiteOpenHelper {
         String statement = "create table " + MealTable.NAME + "( _id integer primary key autoincrement, "
                 + MealTable.Cols.MEAL_ID + ", "
                 + MealTable.Cols.NAME + ", "
-                + MealTable.Cols.PIC_PATH + ")" ;
+                + MealTable.Cols.PIC_PATH
+                + MealTable.Cols.RECIPE + ")" ;
         db.execSQL(statement);
         statement = "create table " + IngredientTable.NAME + "( _id integer primary key autoincrement, "
                 + IngredientTable.Cols.INGREDIENT_ID + ", "

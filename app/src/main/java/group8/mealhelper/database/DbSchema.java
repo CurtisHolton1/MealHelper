@@ -13,6 +13,7 @@ public class DbSchema {
             public static final String MEAL_ID = "id";
             public static final String NAME = "name";
             public static final String PIC_PATH = "picPath";
+            public static final String RECIPE = "recipe";
 
         }
     }
