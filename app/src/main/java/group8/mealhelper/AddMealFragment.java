@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -16,20 +15,17 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
-import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
-import group8.mealhelper.models.Units;
 
 /**
  * Created by curtis on 10/16/15.
@@ -44,7 +40,7 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
     String mCurrentPhotoPath = null;
     String mMealName = null;
     ImageView mImageView = null;
-    Units mUnits = null;
+
 
 
     @Override
@@ -76,7 +72,10 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
         Button cameraButton = (Button) v.findViewById(R.id.addMeal_cameraButton);
         cameraButton.setOnClickListener(this);
         mImageView = (ImageView) v.findViewById(R.id.addMeal_imageView);
-        //mUnits = Units.get();
+        Spinner spinner = (Spinner) v.findViewById(R.id.addMeal_spinner);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),R.array.units_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
         return v;
     }
 

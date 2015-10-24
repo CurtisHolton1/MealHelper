@@ -19,6 +19,11 @@
 
 <!--Begin: AddMeal-->
     <string name="addMeal_cameraButton">Take Picture</string>
+    <string-array name="units_array">
+        <item>Cup(s)</item>
+        <item>tsp(s)</item>
+        <item>Tbsp(s)</item>
+    </string-array>
 <!--End: AddMeal-->
 
 </resources>

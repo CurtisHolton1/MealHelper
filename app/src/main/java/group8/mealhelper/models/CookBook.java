@@ -23,7 +23,7 @@ public class CookBook {
     }
 
     private CookBook(Context context){
-        context.getApplicationContext();
+        mContext = context.getApplicationContext();
         mDatabase = new DbHelper(context).getWritableDatabase();
     }
 
