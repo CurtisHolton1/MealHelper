@@ -9,12 +9,14 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
+import android.text.Layout;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -23,6 +25,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -52,7 +55,8 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
     CheckBox mCheckBox = null;
     Ingredient mTempIngredient = new Ingredient();
     Meal mTempMeal = new Meal();
-
+    RelativeLayout mLayout;
+    View mView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -61,8 +65,9 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_add_meal, container, false);
-        final EditText mealNameField = (EditText) v.findViewById(R.id.addMeal_mealName_EditText);
+        mView = inflater.inflate(R.layout.fragment_add_meal, container, false);
+        mLayout = (RelativeLayout) mView.findViewById(R.id.addMeal_Layout);
+        final EditText mealNameField = (EditText) mView.findViewById(R.id.addMeal_mealName_EditText);
         mealNameField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -80,10 +85,10 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
                 }
             }
         });
-        Button cameraButton = (Button) v.findViewById(R.id.addMeal_cameraButton);
+        Button cameraButton = (Button) mView.findViewById(R.id.addMeal_cameraButton);
         cameraButton.setOnClickListener(this);
-        mImageView = (ImageView) v.findViewById(R.id.addMeal_imageView);
-        final EditText ingredientField = (EditText) v.findViewById(R.id.addMeal_ingredientTable_editText);
+        mImageView = (ImageView) mView.findViewById(R.id.addMeal_imageView);
+        final EditText ingredientField = (EditText) mView.findViewById(R.id.addMeal_ingredientTable_editText);
         ingredientField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -101,12 +106,15 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
                 }
             }
         });
-        final EditText ingredientAmountField = (EditText) v.findViewById(R.id.addMeal_ingredientTable_editText2);
-        ingredientField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+        final EditText ingredientAmountField = (EditText) mView.findViewById(R.id.addMeal_ingredientTable_editText2);
+        ingredientAmountField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    ingredientAmountField.clearFocus();
+                    mView.findViewById(R.id.addMeal_Layout).requestFocus();
+                    InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
+                    inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
+
                 }
                 return false;
             }
@@ -121,7 +129,7 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
             }
         });
 
-        mUnitSpinner = (Spinner) v.findViewById(R.id.addMeal_ingredientTable_spinner);
+        mUnitSpinner = (Spinner) mView.findViewById(R.id.addMeal_ingredientTable_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.units_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mUnitSpinner.setAdapter(adapter);
@@ -136,7 +144,7 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
 
             }
         });
-         mCheckBox = (CheckBox) v.findViewById(R.id.addMeal_ingredientTable_checkBox);
+         mCheckBox = (CheckBox) mView.findViewById(R.id.addMeal_ingredientTable_checkBox);
         mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -144,7 +152,7 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
                     handleIngredientCheck();
             }
         });
-        return v;
+        return mView;
     }
 
 
