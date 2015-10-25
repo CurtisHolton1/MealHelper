@@ -1,12 +1,14 @@
 package group8.mealhelper;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.provider.ContactsContract;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.text.Layout;
@@ -28,12 +30,15 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Dictionary;
+import java.util.List;
 import java.util.Map;
 
 import group8.mealhelper.models.Ingredient;
@@ -57,12 +62,13 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
     Meal mTempMeal = new Meal();
     RelativeLayout mLayout;
     View mView;
+    List<Ingredient> mIngredientList  = new ArrayList<Ingredient>();
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_add_meal, container, false);
@@ -152,10 +158,9 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
                     handleIngredientCheck();
             }
         });
+
         return mView;
     }
-
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -165,14 +170,12 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
         }
 
     }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent cameraIntent) {
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_CAPTURED) {
             setPic();
         }
     }
-
     private void handleCameraButtonClick() {
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File photoFile = null;
@@ -192,6 +195,9 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
         String imageFileName = "JPEG_" + timeStamp + "_";
         String storageDir = Environment.getExternalStorageDirectory().getAbsolutePath();
         File mealDir = new File(storageDir + APP_PATH_SD_CARD);
+        if(!mealDir.exists()){
+              mealDir.mkdir();
+        }
         File image = File.createTempFile(imageFileName, ".jpg", mealDir);
         mCurrentPhotoPath = image.getAbsolutePath();
         return image;
@@ -214,6 +220,7 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
         bmOptions.inPurgeable = true;
         Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
         mImageView.setImageBitmap(bitmap);
+        mTempMeal.setPathToPic(mCurrentPhotoPath);
     }
     private void handleIngredientCheck(){
         if(mTempIngredient != null
@@ -223,12 +230,39 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
                 && mTempIngredient.getUnits() != null
                 && !mTempIngredient.getUnits().isEmpty())
         {
-                    Log.d("blah", "Valid Ingredient");
+            if(!mIngredientList.contains(mTempIngredient)){
+                mIngredientList.add(mTempIngredient);
+                mTempMeal.setIngredientList(mIngredientList);
+            }
+            else{
+
+                Context context = getContext();
+                CharSequence text = "Ingredient already added";
+                int duration = Toast.LENGTH_SHORT;
+                Toast toast = Toast.makeText(context, text, duration);
+                toast.show();
+            }
+            mTempIngredient = new Ingredient();
+            clearIngredientFields();
         }
         else{
-            Log.d("blah2", "Invalid Ingredient");
+            Context context = getContext();
+            CharSequence text = "Invalid ingredient";
+            int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
             mCheckBox.toggle();
         }
+    }
+    private void clearIngredientFields(){
+        mTempIngredient = new Ingredient();
+        EditText e = (EditText) mView.findViewById(R.id.addMeal_ingredientTable_editText);
+        e.setText("");
+        e = (EditText) mView.findViewById(R.id.addMeal_ingredientTable_editText2);
+        e.setText("");
+        CheckBox c = (CheckBox) mView.findViewById(R.id.addMeal_ingredientTable_checkBox);
+        if(c.isChecked())
+            c.toggle();
     }
 
 }
