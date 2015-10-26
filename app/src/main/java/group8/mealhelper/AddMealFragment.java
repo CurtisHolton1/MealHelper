@@ -27,6 +27,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -62,6 +63,8 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
     Meal mTempMeal = new Meal();
     RelativeLayout mLayout;
     View mView;
+    ListView mIngredientListView;
+    IngredientListAdapter mListAdapter;
     List<Ingredient> mIngredientList  = new ArrayList<Ingredient>();
 
 
@@ -154,10 +157,13 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
         mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if(isChecked)
+                if (isChecked)
                     handleIngredientCheck();
             }
         });
+        mIngredientListView = (ListView) mView.findViewById(R.id.addMeal_ingredientList);
+        mListAdapter = new IngredientListAdapter(getContext(), mIngredientList);
+        mIngredientListView.setAdapter(mListAdapter);
 
         return mView;
     }
@@ -233,6 +239,7 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
             if(!mIngredientList.contains(mTempIngredient)){
                 mIngredientList.add(mTempIngredient);
                 mTempMeal.setIngredientList(mIngredientList);
+                mListAdapter.notifyDataSetChanged();
             }
             else{
 

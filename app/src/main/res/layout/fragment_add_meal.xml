@@ -144,27 +144,27 @@
                 android:layout_weight="0.3"/>
         </TableRow>
     </TableLayout>
+<ListView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/addMeal_ingredientList"
+    android:layout_below="@+id/addMeal_ingredientTable"
+    android:minHeight="500dp"
+    />
 
-        <ListView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/addMeal_listView"
-            android:layout_below="@id/addMeal_ingredientTable"
-        />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Recipe"
-            android:id="@+id/addMeal_textView3"
-            android:textSize="25dp"
-            android:gravity="center"
-            android:layout_below="@+id/addMeal_listView"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:background="#888080"/>
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="Recipe"-->
+            <!--android:id="@+id/addMeal_textView3"-->
+            <!--android:textSize="25dp"-->
+            <!--android:gravity="center"-->
+            <!--android:layout_below="@+id/addMeal_listView"-->
+            <!--android:layout_alignParentLeft="true"-->
+            <!--android:layout_alignParentStart="true"-->
+            <!--android:layout_alignParentRight="true"-->
+            <!--android:layout_alignParentEnd="true"-->
+            <!--android:background="#888080"/>-->
 
     </RelativeLayout>
 </ScrollView>
