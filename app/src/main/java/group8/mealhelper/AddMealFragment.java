@@ -163,7 +163,7 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked)
-                    handleIngredientCheck();
+                    ingredientCheck();
             }
         });
         mIngredientListView = (ListView) mView.findViewById(R.id.addMeal_ingredientList);
@@ -179,7 +179,8 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
             }
         });
         EditText recipeField = (EditText) mView.findViewById(R.id.addMeal_recipeText);
-
+        Button submit = (Button) mView.findViewById(R.id.addMeal_submitButton);
+        submit.setOnClickListener(this);
         return mView;
     }
 
@@ -187,7 +188,10 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.addMeal_cameraButton:
-                handleCameraButtonClick();
+                cameraButtonClick();
+                break;
+            case R.id.addMeal_submitButton:
+                submitButtonClick();
                 break;
         }
 
@@ -200,7 +204,7 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    private void handleCameraButtonClick() {
+    private void cameraButtonClick() {
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File photoFile = null;
         try {
@@ -249,7 +253,7 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
         mTempMeal.setPathToPic(mCurrentPhotoPath);
     }
 
-    private void handleIngredientCheck() {
+    private void ingredientCheck() {
         if (mTempIngredient != null
                 && mTempIngredient.getName() != null
                 && !mTempIngredient.getName().isEmpty()
@@ -291,5 +295,8 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
         CheckBox c = (CheckBox) mView.findViewById(R.id.addMeal_ingredientTable_checkBox);
         if (c.isChecked())
             c.toggle();
+    }
+    private void submitButtonClick(){
+        //if valid save to DB
     }
 }

@@ -182,6 +182,13 @@
             android:ems="10"
             android:inputType="textMultiLine"
             />
+        <Button
+            android:id="@+id/addMeal_submitButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/addMeal_recipeText"
+            android:text="Submit"
+            />
 
 
     </RelativeLayout>
