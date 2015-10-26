@@ -31,7 +31,7 @@ public class IngredientListAdapter extends ArrayAdapter<Ingredient> {
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.ingredient_list_row, parent, false);
         TextView textView = (TextView) rowView.findViewById(R.id.ingredient_list_row_text);
-        textView.setText(mIngredients.get(0).getName());
+        textView.setText(mIngredients.get(position).getName());
         Button button = (Button) rowView.findViewById(R.id.ingredient_list_row_button);
         return rowView;
     }
