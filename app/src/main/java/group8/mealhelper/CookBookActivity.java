@@ -11,6 +11,7 @@ public class CookBookActivity extends FragmentActivity {
     private final String TAG = ((Object) this)
             .getClass()
             .getSimpleName().toUpperCase();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -28,13 +29,13 @@ public class CookBookActivity extends FragmentActivity {
     }
 
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume METHOD CALLED++");
     }
 
     @Override
-    protected void onPause(){
+    protected void onPause() {
         super.onPause();
         Log.d(TAG, "onPause METHOD CALLED+");
     }

@@ -21,8 +21,8 @@ public class IngredientListAdapter extends ArrayAdapter<Ingredient> {
     private final Context mContext;
     private final List<Ingredient> mIngredients;
 
-    public IngredientListAdapter(Context context, List<Ingredient> ingredients){
-        super(context,-1,ingredients);
+    public IngredientListAdapter(Context context, List<Ingredient> ingredients) {
+        super(context, -1, ingredients);
         this.mContext = context;
         this.mIngredients = ingredients;
     }
@@ -31,8 +31,12 @@ public class IngredientListAdapter extends ArrayAdapter<Ingredient> {
     public View getView(final int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.ingredient_list_row, parent, false);
-        TextView textView = (TextView) rowView.findViewById(R.id.ingredient_list_row_text);
-        textView.setText(mIngredients.get(position).getName());
+        TextView name = (TextView) rowView.findViewById(R.id.ingredient_list_row_text);
+        name.setText(mIngredients.get(position).getName());
+        TextView amount = (TextView) rowView.findViewById(R.id.ingredient_list_row_text2);
+        amount.setText(Double.toString(mIngredients.get(position).getAmount()));
+        TextView units = (TextView) rowView.findViewById(R.id.ingredient_list_row_text3);
+        units.setText(mIngredients.get(position).getUnits());
         Button button = (Button) rowView.findViewById(R.id.ingredient_list_row_button);
         button.setOnClickListener(new View.OnClickListener() {
             @Override

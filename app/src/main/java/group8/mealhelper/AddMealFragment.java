@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -15,10 +16,12 @@ import android.text.Layout;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AbsListView;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -27,6 +30,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -65,13 +69,14 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
     View mView;
     ListView mIngredientListView;
     IngredientListAdapter mListAdapter;
-    List<Ingredient> mIngredientList  = new ArrayList<Ingredient>();
+    List<Ingredient> mIngredientList = new ArrayList<Ingredient>();
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_add_meal, container, false);
@@ -132,7 +137,7 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 if (!hasFocus) {
-                    if(!ingredientAmountField.getText().toString().isEmpty())
+                    if (!ingredientAmountField.getText().toString().isEmpty())
                         mTempIngredient.setAmount(Double.parseDouble(ingredientAmountField.getText().toString()));
                 }
             }
@@ -153,7 +158,7 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
 
             }
         });
-         mCheckBox = (CheckBox) mView.findViewById(R.id.addMeal_ingredientTable_checkBox);
+        mCheckBox = (CheckBox) mView.findViewById(R.id.addMeal_ingredientTable_checkBox);
         mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -164,8 +169,20 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
         mIngredientListView = (ListView) mView.findViewById(R.id.addMeal_ingredientList);
         mListAdapter = new IngredientListAdapter(getContext(), mIngredientList);
         mIngredientListView.setAdapter(mListAdapter);
+        mIngredientListView.setOnTouchListener(new View.OnTouchListener() {
+            // Setting on Touch Listener for handling the touch inside ScrollView
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                // Disallow the touch request for parent scroll on touch of child view
+                v.getParent().requestDisallowInterceptTouchEvent(true);
+                return false;
+            }
+        });
+        EditText recipeField = (EditText) mView.findViewById(R.id.addMeal_recipeText);
+
         return mView;
     }
+
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
@@ -175,12 +192,14 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
         }
 
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent cameraIntent) {
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_CAPTURED) {
             setPic();
         }
     }
+
     private void handleCameraButtonClick() {
         Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         File photoFile = null;
@@ -194,19 +213,21 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
             startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);
         }
     }
+
     private File createImageFile() throws IOException {
         // Create an image file name
         String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
         String imageFileName = "JPEG_" + timeStamp + "_";
         String storageDir = Environment.getExternalStorageDirectory().getAbsolutePath();
         File mealDir = new File(storageDir + APP_PATH_SD_CARD);
-        if(!mealDir.exists()){
-              mealDir.mkdir();
+        if (!mealDir.exists()) {
+            mealDir.mkdir();
         }
         File image = File.createTempFile(imageFileName, ".jpg", mealDir);
         mCurrentPhotoPath = image.getAbsolutePath();
         return image;
     }
+
     private void setPic() {
         // Get the dimensions of the View
         int targetW = mImageView.getWidth();
@@ -227,20 +248,19 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
         mImageView.setImageBitmap(bitmap);
         mTempMeal.setPathToPic(mCurrentPhotoPath);
     }
-    private void handleIngredientCheck(){
-        if(mTempIngredient != null
+
+    private void handleIngredientCheck() {
+        if (mTempIngredient != null
                 && mTempIngredient.getName() != null
                 && !mTempIngredient.getName().isEmpty()
                 && mTempIngredient.getAmount() != 0
                 && mTempIngredient.getUnits() != null
-                && !mTempIngredient.getUnits().isEmpty())
-        {
-            if(!mIngredientList.contains(mTempIngredient)){
+                && !mTempIngredient.getUnits().isEmpty()) {
+            if (!mIngredientList.contains(mTempIngredient)) {
                 mIngredientList.add(mTempIngredient);
                 mTempMeal.setIngredientList(mIngredientList);
                 mListAdapter.notifyDataSetChanged();
-            }
-            else{
+            } else {
 
                 Context context = getContext();
                 CharSequence text = "Ingredient already added";
@@ -249,9 +269,9 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
                 toast.show();
             }
             mTempIngredient = new Ingredient();
+            mTempIngredient.setUnits(mUnitSpinner.getSelectedItem().toString());
             clearIngredientFields();
-        }
-        else{
+        } else {
             Context context = getContext();
             CharSequence text = "Invalid ingredient";
             int duration = Toast.LENGTH_SHORT;
@@ -260,14 +280,16 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
             mCheckBox.toggle();
         }
     }
-    private void clearIngredientFields(){
+
+    private void clearIngredientFields() {
         mTempIngredient = new Ingredient();
+        mTempIngredient.setUnits(mUnitSpinner.getSelectedItem().toString());
         EditText e = (EditText) mView.findViewById(R.id.addMeal_ingredientTable_editText);
         e.setText("");
         e = (EditText) mView.findViewById(R.id.addMeal_ingredientTable_editText2);
         e.setText("");
         CheckBox c = (CheckBox) mView.findViewById(R.id.addMeal_ingredientTable_checkBox);
-        if(c.isChecked())
+        if (c.isChecked())
             c.toggle();
     }
 }

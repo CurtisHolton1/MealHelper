@@ -17,7 +17,7 @@ import group8.mealhelper.models.Meal;
  * Created by curtis on 10/16/15.
  */
 public class CookBookFragment extends Fragment implements View.OnClickListener {
-    CookBook mCookBook =null;
+    CookBook mCookBook = null;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {

@@ -26,14 +26,15 @@ public class HomeActivity extends FragmentActivity {
         }
         Log.d(TAG, "onCreate METHOD CALLED+++");
     }
+
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume METHOD CALLED++");
     }
 
     @Override
-    protected void onPause(){
+    protected void onPause() {
         super.onPause();
         Log.d(TAG, "onPause METHOD CALLED+");
     }

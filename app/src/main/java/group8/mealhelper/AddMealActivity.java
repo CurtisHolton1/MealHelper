@@ -9,10 +9,11 @@ import android.util.Log;
 /**
  * Created by curtis on 10/16/15.
  */
-public class AddMealActivity extends FragmentActivity{
+public class AddMealActivity extends FragmentActivity {
     private final String TAG = ((Object) this)
             .getClass()
             .getSimpleName().toUpperCase();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -29,13 +30,13 @@ public class AddMealActivity extends FragmentActivity{
     }
 
     @Override
-    protected void onResume(){
+    protected void onResume() {
         super.onResume();
         Log.d(TAG, "onResume METHOD CALLED++");
     }
 
     @Override
-    protected void onPause(){
+    protected void onPause() {
         super.onPause();
         Log.d(TAG, "onPause METHOD CALLED+");
     }

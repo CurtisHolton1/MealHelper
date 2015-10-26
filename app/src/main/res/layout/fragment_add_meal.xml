@@ -1,170 +1,188 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:weightSum="1"
-            android:fillViewport="false">
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/addMeal_Layout"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:descendantFocusability="beforeDescendants">
-<TextView
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:text="Meal Name"
-    android:gravity="center"
-    android:textSize="25dp"
-    android:layout_weight="0.05"
-    android:id="@+id/addMeal_textView"
-    android:background="#888080"/>
-
-    <EditText
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/addMeal_mealName_EditText"
-        android:layout_gravity="center_horizontal"
-        android:singleLine="true"
-        android:layout_below="@+id/addMeal_textView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:id="@+id/addMeal_imageView"
-        android:layout_below="@+id/addMeal_mealName_EditText"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
-
-    <Button
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/addMeal_cameraButton"
-        android:id="@+id/addMeal_cameraButton"
-        android:layout_below="@+id/addMeal_imageView"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Ingredients"
-        android:id="@+id/addMeal_textView2"
-        android:textSize="25dp"
-        android:gravity="center"
-        android:layout_below="@+id/addMeal_cameraButton"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentEnd="true"
-        android:background="#888080"/>
-
-    <TableLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/addMeal_textView2"
-        android:layout_centerHorizontal="true"
-        android:orientation="horizontal"
-        android:id="@+id/addMeal_ingredientTable">
-
-
-        <TableRow
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:fillViewport="false"
+            android:orientation="vertical"
+            android:weightSum="1">
+
+    <RelativeLayout
+        android:id="@+id/addMeal_Layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:descendantFocusability="beforeDescendants"
+        android:focusable="true"
+        android:focusableInTouchMode="true">
+
+        <TextView
+            android:id="@+id/addMeal_textView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="0.05"
+            android:background="#888080"
+            android:gravity="center"
+            android:text="Meal Name"
+            android:textSize="25dp"/>
+
+        <EditText
+            android:id="@+id/addMeal_mealName_EditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/addMeal_textView"
+            android:layout_gravity="center_horizontal"
+            android:singleLine="true"/>
+
+        <ImageView
+            android:id="@+id/addMeal_imageView"
+            android:layout_width="match_parent"
+            android:layout_height="200dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/addMeal_mealName_EditText"/>
+
+        <Button
+            android:id="@+id/addMeal_cameraButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/addMeal_imageView"
+            android:text="@string/addMeal_cameraButton"/>
+
+        <TextView
+            android:id="@+id/addMeal_textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/addMeal_cameraButton"
+            android:background="#888080"
+            android:gravity="center"
+            android:text="Ingredients"
+            android:textSize="25dp"/>
+
+        <TableLayout
+            android:id="@+id/addMeal_ingredientTable"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/addMeal_textView2"
+            android:layout_centerHorizontal="true"
             android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Ingredient"
-                android:id="@+id/addMeal_ingredientTable_textView"
-                android:layout_column="0"
-                android:layout_weight="1"/>
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Amount"
-                android:id="@+id/addMeal_ingredientTable_textView2"
-                android:layout_column="1"
-                android:layout_weight="1"/>
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Units"
-                android:id="@+id/addMeal_ingredientTable_textView3"
-                android:layout_column="2"
-                android:layout_weight="1"/>
-        </TableRow>
+                <TextView
+                    android:id="@+id/addMeal_ingredientTable_textView"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_column="0"
+                    android:layout_weight="1"
+                    android:text="Ingredient"/>
 
-        <TableRow
+                <TextView
+                    android:id="@+id/addMeal_ingredientTable_textView2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_column="1"
+                    android:layout_weight="1"
+                    android:text="Amount"/>
+
+                <TextView
+                    android:id="@+id/addMeal_ingredientTable_textView3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_column="2"
+                    android:layout_weight="1"
+                    android:text="Units"/>
+            </TableRow>
+
+            <TableRow
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                >
+
+                <EditText
+                    android:id="@+id/addMeal_ingredientTable_editText"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_column="3"
+                    android:layout_weight="1"
+                    android:imeOptions="actionNext"
+                    android:singleLine="true"/>
+
+                <EditText
+                    android:id="@+id/addMeal_ingredientTable_editText2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_column="5"
+                    android:layout_weight="1"
+                    android:ems="10"
+                    android:imeOptions="actionDone"
+                    android:inputType="numberDecimal"
+                    android:singleLine="true"/>
+
+                <Spinner
+                    android:id="@+id/addMeal_ingredientTable_spinner"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_column="4"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"/>
+
+                <CheckBox
+                    android:id="@+id/addMeal_ingredientTable_checkBox"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_column="7"
+                    android:layout_weight="0.3"
+                    android:checked="false"/>
+            </TableRow>
+        </TableLayout>
+
+        <ListView
+            android:id="@+id/addMeal_ingredientList"
+            android:layout_width="wrap_content"
+            android:layout_height="200dp"
+            android:layout_below="@+id/addMeal_ingredientTable"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="#888080"
+            android:divider="@null"
+            android:nestedScrollingEnabled="true"
+            />
+
+        <TextView
+            android:id="@+id/addMeal_textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/addMeal_ingredientList"
+            android:layout_marginTop="10dp"
+            android:background="#888080"
+            android:gravity="center"
+            android:text="Recipe"
+            android:textSize="25dp"/>
+
+        <EditText
+            android:id="@+id/addMeal_recipeText"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            >
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/addMeal_textView3"
+            android:ems="10"
+            android:inputType="textMultiLine"
+            />
 
-            <EditText
-                android:singleLine="true"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/addMeal_ingredientTable_editText"
-                android:layout_column="3"
-                android:layout_weight="1"
-                android:imeOptions="actionNext"/>
-
-            <EditText
-                android:singleLine="true"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:inputType="numberDecimal"
-                android:ems="10"
-                android:id="@+id/addMeal_ingredientTable_editText2"
-                android:layout_column="5"
-                android:layout_weight="1"
-                android:imeOptions="actionDone"/>
-
-            <Spinner
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/addMeal_ingredientTable_spinner"
-                android:layout_column="4"
-                android:layout_weight="1"
-                android:layout_gravity="center"/>
-
-            <CheckBox
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:id="@+id/addMeal_ingredientTable_checkBox"
-                android:layout_column="7"
-                android:checked="false"
-                android:layout_weight="0.3"/>
-        </TableRow>
-    </TableLayout>
-<ListView
-    android:layout_width="match_parent"
-    android:layout_height="250dp"
-    android:id="@+id/addMeal_ingredientList"
-    android:layout_below="@+id/addMeal_ingredientTable"
-
-    />
-
-        <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="Recipe"-->
-            <!--android:id="@+id/addMeal_textView3"-->
-            <!--android:textSize="25dp"-->
-            <!--android:gravity="center"-->
-            <!--android:layout_below="@+id/addMeal_listView"-->
-            <!--android:layout_alignParentLeft="true"-->
-            <!--android:layout_alignParentStart="true"-->
-            <!--android:layout_alignParentRight="true"-->
-            <!--android:layout_alignParentEnd="true"-->
-            <!--android:background="#888080"/>-->
 
     </RelativeLayout>
 </ScrollView>
