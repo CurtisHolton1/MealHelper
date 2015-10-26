@@ -164,7 +164,6 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
         mIngredientListView = (ListView) mView.findViewById(R.id.addMeal_ingredientList);
         mListAdapter = new IngredientListAdapter(getContext(), mIngredientList);
         mIngredientListView.setAdapter(mListAdapter);
-
         return mView;
     }
     @Override
@@ -271,5 +270,4 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
         if(c.isChecked())
             c.toggle();
     }
-
 }

@@ -1,6 +1,7 @@
 package group8.mealhelper;
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,12 +28,19 @@ public class IngredientListAdapter extends ArrayAdapter<Ingredient> {
     }
 
     @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(final int position, View convertView, ViewGroup parent) {
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.ingredient_list_row, parent, false);
         TextView textView = (TextView) rowView.findViewById(R.id.ingredient_list_row_text);
         textView.setText(mIngredients.get(position).getName());
         Button button = (Button) rowView.findViewById(R.id.ingredient_list_row_button);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mIngredients.remove(position);
+                notifyDataSetChanged();
+            }
+        });
         return rowView;
     }
 }
