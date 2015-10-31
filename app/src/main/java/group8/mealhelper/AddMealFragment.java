@@ -65,22 +65,23 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
     public static int IMAGE_CAPTURED = 1;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     public final static String APP_PATH_SD_CARD = "/MealHelper";
-    String mCurrentPhotoPath = null;
-    ImageView mImageView = null;
-    Spinner mUnitSpinner;
-    CheckBox mCheckBox = null;
-    Ingredient mTempIngredient = new Ingredient();
-    Meal mTempMeal = new Meal();
     RelativeLayout mLayout;
     View mView;
-    ListView mIngredientListView;
-    IngredientListAdapter mListAdapter;
-    List<Ingredient> mIngredientList = new ArrayList<Ingredient>();
-    SQLiteDatabase  mDatabase;
+    String mCurrentPhotoPath = null;
+    ImageView mImageView = null;
     EditText mMealNameField;
     EditText mIngredientField;
     EditText mIngredientAmountField;
     EditText mRecipeField;
+    ListView mIngredientListView;
+    IngredientListAdapter mListAdapter;
+    List<Ingredient> mIngredientList = new ArrayList<Ingredient>();
+    Spinner mUnitSpinner;
+    CheckBox mCheckBox = null;
+    Ingredient mTempIngredient = new Ingredient();
+    Meal mTempMeal = new Meal();
+    SQLiteDatabase  mDatabase;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -123,7 +124,6 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
             }
         });
          mRecipeField = (EditText) mView.findViewById(R.id.addMeal_recipeText);
-
         Button submit = (Button) mView.findViewById(R.id.addMeal_submitButton);
         submit.setOnClickListener(this);
         return mView;
