@@ -1,8 +1,10 @@
 package group8.mealhelper;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
@@ -46,12 +48,16 @@ import java.util.Dictionary;
 import java.util.List;
 import java.util.Map;
 
+import group8.mealhelper.database.DbHelper;
+import group8.mealhelper.database.DbSchema;
+import group8.mealhelper.database.DbSchema.MealTable;
 import group8.mealhelper.models.Ingredient;
 import group8.mealhelper.models.Meal;
 
 /**
  * Created by curtis on 10/16/15.
  */
+
 public class AddMealFragment extends Fragment implements View.OnClickListener {
     private final String TAG = ((Object) this)
             .getClass()
@@ -70,7 +76,7 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
     ListView mIngredientListView;
     IngredientListAdapter mListAdapter;
     List<Ingredient> mIngredientList = new ArrayList<Ingredient>();
-
+    SQLiteDatabase  mDatabase;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -81,6 +87,7 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.fragment_add_meal, container, false);
         mLayout = (RelativeLayout) mView.findViewById(R.id.addMeal_Layout);
+        mDatabase = new DbHelper(getContext()).getWritableDatabase();
         final EditText mealNameField = (EditText) mView.findViewById(R.id.addMeal_mealName_EditText);
         mealNameField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -178,7 +185,24 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
                 return false;
             }
         });
-        EditText recipeField = (EditText) mView.findViewById(R.id.addMeal_recipeText);
+        final EditText recipeField = (EditText) mView.findViewById(R.id.addMeal_recipeText);
+        recipeField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    recipeField.clearFocus();
+                }
+                return false;
+            }
+        });
+        recipeField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (!hasFocus) {
+                    mTempMeal.setRecipe(recipeField.getText().toString());
+                }
+            }
+        });
         Button submit = (Button) mView.findViewById(R.id.addMeal_submitButton);
         submit.setOnClickListener(this);
         return mView;
@@ -254,18 +278,12 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
     }
 
     private void ingredientCheck() {
-        if (mTempIngredient != null
-                && mTempIngredient.getName() != null
-                && !mTempIngredient.getName().isEmpty()
-                && mTempIngredient.getAmount() != 0
-                && mTempIngredient.getUnits() != null
-                && !mTempIngredient.getUnits().isEmpty()) {
+        if (mTempIngredient.isValid()) {
             if (!mIngredientList.contains(mTempIngredient)) {
                 mIngredientList.add(mTempIngredient);
                 mTempMeal.setIngredientList(mIngredientList);
                 mListAdapter.notifyDataSetChanged();
             } else {
-
                 Context context = getContext();
                 CharSequence text = "Ingredient already added";
                 int duration = Toast.LENGTH_SHORT;
@@ -298,5 +316,25 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
     }
     private void submitButtonClick(){
         //if valid save to DB
+
+        if (mTempMeal.isValid()){
+            Context context = getContext();
+            CharSequence text = "Adding Meal";
+            int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+            ContentValues values = new ContentValues();
+            values.put(MealTable.Cols.NAME, mTempMeal.getName());
+            values.put(MealTable.Cols.PIC_PATH, mTempMeal.getPathToPic());
+            values.put(MealTable.Cols.RECIPE, mTempMeal.getRecipe());
+            mDatabase.insert(MealTable.NAME, null,values);
+        }
+        else {
+            Context context = getContext();
+            CharSequence text = "Invalid Meal";
+            int duration = Toast.LENGTH_SHORT;
+            Toast toast = Toast.makeText(context, text, duration);
+            toast.show();
+        }
     }
 }

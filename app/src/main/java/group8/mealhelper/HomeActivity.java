@@ -36,6 +36,16 @@ public class HomeActivity extends FragmentActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        Log.d(TAG, "onPause METHOD CALLED+");
+        Log.d(TAG, "onPause METHOD CALLED-");
     }
+//    @Override
+//    protected  void onStop(){
+//        super.onStop();
+//        Log.d(TAG, "onStop METHOD CALLED--");
+//    }
+//    @Override
+//    protected void onDestroy(){
+//        super.onDestroy();
+//        Log.d(TAG, "onDestroy METHOD CALLED--");
+//    }
 }

@@ -1,5 +1,9 @@
 package group8.mealhelper.models;
+import android.content.ContentValues;
+
 import java.util.List;
+
+import group8.mealhelper.database.DbSchema;
 
 /**
  * Created by curtis on 10/16/15.
@@ -9,6 +13,7 @@ public class Meal {
     private String mName;
     private String mPathToPic;
     private List<Ingredient> mIngredientList;
+    private String mRecipe;
 
     public String getId() {
         return mId;
@@ -42,7 +47,25 @@ public class Meal {
         mIngredientList = ingredientList;
     }
 
+    public String getRecipe() {
+        return mRecipe;
+    }
+
+    public void setRecipe(String recipe) {
+        mRecipe = recipe;
+    }
     public Meal(){
 
     }
+    public boolean isValid(){
+        if(mName != null && !mName.isEmpty()
+                && mPathToPic != null && !mPathToPic.isEmpty()
+                && mIngredientList != null && !mIngredientList.isEmpty()
+                && mRecipe != null && !mRecipe.isEmpty()){
+            return true;
+        }
+        return false;
+    }
+
+
 }

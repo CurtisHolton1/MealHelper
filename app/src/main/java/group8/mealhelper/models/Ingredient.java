@@ -35,4 +35,10 @@ public class Ingredient {
     public  Ingredient(){
 
     }
+    public boolean isValid(){
+        if (mName!= null && !mName.isEmpty() && mAmount != 0 && mUnits != null && !mUnits.isEmpty()){
+        return true;
+        }
+        return false;
+    }
 }
