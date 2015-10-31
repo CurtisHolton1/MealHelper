@@ -1,12 +1,11 @@
 package group8.mealhelper.models;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import group8.mealhelper.database.DbHelper;
+import group8.mealhelper.database.DbSchema;
 
 /**
  * Created by curtis on 10/16/15.
@@ -31,4 +30,8 @@ public class CookBook {
 
     }
 
+    private Cursor queryMeals(String whereClause, String [] whereArgs){
+    Cursor cursor = mDatabase.query(DbSchema.MealTable.NAME,null,whereClause,whereArgs,null,null,null);
+    return cursor;
+    }
 }
