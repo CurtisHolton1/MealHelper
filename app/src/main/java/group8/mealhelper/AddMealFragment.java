@@ -77,6 +77,10 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
     IngredientListAdapter mListAdapter;
     List<Ingredient> mIngredientList = new ArrayList<Ingredient>();
     SQLiteDatabase  mDatabase;
+    EditText mMealNameField;
+    EditText mIngredientField;
+    EditText mIngredientAmountField;
+    EditText mRecipeField;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -88,83 +92,16 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
         mView = inflater.inflate(R.layout.fragment_add_meal, container, false);
         mLayout = (RelativeLayout) mView.findViewById(R.id.addMeal_Layout);
         mDatabase = new DbHelper(getContext()).getWritableDatabase();
-        final EditText mealNameField = (EditText) mView.findViewById(R.id.addMeal_mealName_EditText);
-        mealNameField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    mealNameField.clearFocus();
-                }
-                return false;
-            }
-        });
-        mealNameField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    mTempMeal.setName(mealNameField.getText().toString());
-                }
-            }
-        });
+        mMealNameField = (EditText) mView.findViewById(R.id.addMeal_mealName_EditText);
         Button cameraButton = (Button) mView.findViewById(R.id.addMeal_cameraButton);
         cameraButton.setOnClickListener(this);
         mImageView = (ImageView) mView.findViewById(R.id.addMeal_imageView);
-        final EditText ingredientField = (EditText) mView.findViewById(R.id.addMeal_ingredientTable_editText);
-        ingredientField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    ingredientField.clearFocus();
-                }
-                return false;
-            }
-        });
-        ingredientField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    mTempIngredient.setName(ingredientField.getText().toString());
-                }
-            }
-        });
-        final EditText ingredientAmountField = (EditText) mView.findViewById(R.id.addMeal_ingredientTable_editText2);
-        ingredientAmountField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    mView.findViewById(R.id.addMeal_Layout).requestFocus();
-                    InputMethodManager inputMethodManager = (InputMethodManager) getContext().getSystemService(Activity.INPUT_METHOD_SERVICE);
-                    inputMethodManager.hideSoftInputFromWindow(v.getWindowToken(), 0);
-
-                }
-                return false;
-            }
-        });
-        ingredientAmountField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    if (!ingredientAmountField.getText().toString().isEmpty())
-                        mTempIngredient.setAmount(Double.parseDouble(ingredientAmountField.getText().toString()));
-                }
-            }
-        });
-
+        mIngredientField = (EditText) mView.findViewById(R.id.addMeal_ingredientTable_editText);
+        mIngredientAmountField = (EditText) mView.findViewById(R.id.addMeal_ingredientTable_editText2);
         mUnitSpinner = (Spinner) mView.findViewById(R.id.addMeal_ingredientTable_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.units_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         mUnitSpinner.setAdapter(adapter);
-        mUnitSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                mTempIngredient.setUnits(parent.getItemAtPosition(position).toString());
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });
         mCheckBox = (CheckBox) mView.findViewById(R.id.addMeal_ingredientTable_checkBox);
         mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -185,24 +122,8 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
                 return false;
             }
         });
-        final EditText recipeField = (EditText) mView.findViewById(R.id.addMeal_recipeText);
-        recipeField.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    recipeField.clearFocus();
-                }
-                return false;
-            }
-        });
-        recipeField.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View v, boolean hasFocus) {
-                if (!hasFocus) {
-                    mTempMeal.setRecipe(recipeField.getText().toString());
-                }
-            }
-        });
+         mRecipeField = (EditText) mView.findViewById(R.id.addMeal_recipeText);
+
         Button submit = (Button) mView.findViewById(R.id.addMeal_submitButton);
         submit.setOnClickListener(this);
         return mView;
@@ -278,6 +199,10 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
     }
 
     private void ingredientCheck() {
+        mTempIngredient.setName(mIngredientField.getText().toString());
+        mTempIngredient.setUnits(mUnitSpinner.getSelectedItem().toString());
+        if (!mIngredientAmountField.getText().toString().isEmpty())
+            mTempIngredient.setAmount(Double.parseDouble(mIngredientAmountField.getText().toString()));
         if (mTempIngredient.isValid()) {
             if (!mIngredientList.contains(mTempIngredient)) {
                 mIngredientList.add(mTempIngredient);
@@ -316,7 +241,8 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
     }
     private void submitButtonClick(){
         //if valid save to DB
-
+        mTempMeal.setName(mMealNameField.getText().toString());
+        mTempMeal.setRecipe(mRecipeField.getText().toString());
         if (mTempMeal.isValid()){
             Context context = getContext();
             CharSequence text = "Adding Meal";
