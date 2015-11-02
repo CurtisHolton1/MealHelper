@@ -21,25 +21,22 @@ public class DbHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db){
-        String statement = "create table " + MealTable.NAME + "( _id integer primary key autoincrement, "
-                + MealTable.Cols.MEAL_ID + ", "
+        String statement = "create table " + MealTable.NAME + "( " + MealTable.Cols.MEAL_ID + " integer primary key autoincrement, "
                 + MealTable.Cols.NAME + ", "
-                + MealTable.Cols.PIC_PATH
+                + MealTable.Cols.PIC_PATH + ", "
                 + MealTable.Cols.RECIPE + ")" ;
         db.execSQL(statement);
-        statement = "create table " + IngredientTable.NAME + "( _id integer primary key autoincrement, "
-                + IngredientTable.Cols.INGREDIENT_ID + ", "
+        statement = "create table " + IngredientTable.NAME + "( id integer primary key autoincrement, "
                 + IngredientTable.Cols.MEAL_ID + ", "
                 + IngredientTable.Cols.NAME + ", "
                 + IngredientTable.Cols.AMOUNT +", "
                 + IngredientTable.Cols.UNIT + ")";
         db.execSQL(statement);
-        statement = "create table " + MenuTable.NAME + "( _id integer primary key autoincrement, "
-                + MenuTable.Cols.Menu_ID + ", "
+        statement = "create table " + MenuTable.NAME + "( id integer primary key autoincrement, "
                 + MenuTable.Cols.MEAL + ", "
                 + MenuTable.Cols.DAY + ")";
         db.execSQL(statement);
-//        statement = "create table " + UnitTable.NAME + "( _id integer primary key autoincrement, "
+//        statement = "create table " + UnitTable.NAME + "( id integer primary key autoincrement, "
 //                + UnitTable.Cols.UNIT_ID + ", "
 //                + UnitTable.Cols.NAME + ")";
 //        db.execSQL(statement);

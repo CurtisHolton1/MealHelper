@@ -3,6 +3,10 @@ package group8.mealhelper.models;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import group8.mealhelper.database.DbHelper;
 import group8.mealhelper.database.DbSchema;
@@ -23,15 +27,33 @@ public class CookBook {
 
     private CookBook(Context context){
         mContext = context.getApplicationContext();
-        mDatabase = new DbHelper(context).getWritableDatabase();
+        mDatabase = new DbHelper(mContext).getWritableDatabase();
+    }
+    public List<Meal> getAllMeals(){
+        Cursor c = queryMeals(null,null);
+        List<Meal> mealList = new ArrayList<Meal>();
+        if(c.getCount()>0) {
+            c.moveToFirst();
+            mealList.add(getMeal(c));
+            while(!c.isLast()) {
+                c.moveToNext();
+                mealList.add(getMeal(c));
+            }
+        }
+        return mealList;
     }
 
-    public void addMeal(Meal m){
-
+    private Meal getMeal(Cursor c){
+        Meal meal = new Meal();
+        meal.setId(c.getString(c.getColumnIndex(DbSchema.MealTable.Cols.MEAL_ID)));
+        meal.setName(c.getString(c.getColumnIndex(DbSchema.MealTable.Cols.NAME)));
+        meal.setRecipe(c.getString(c.getColumnIndex(DbSchema.MealTable.Cols.RECIPE)));
+        meal.setPathToPic(c.getString(c.getColumnIndex(DbSchema.MealTable.Cols.PIC_PATH)));
+        return meal;
     }
 
     private Cursor queryMeals(String whereClause, String [] whereArgs){
     Cursor cursor = mDatabase.query(DbSchema.MealTable.NAME,null,whereClause,whereArgs,null,null,null);
-    return cursor;
+        return cursor;
     }
 }

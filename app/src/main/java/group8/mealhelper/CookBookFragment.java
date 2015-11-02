@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ListView;
 
 import java.lang.reflect.Array;
 import java.util.ArrayList;
@@ -23,8 +24,8 @@ import group8.mealhelper.models.Meal;
  */
 public class CookBookFragment extends Fragment implements View.OnClickListener {
     CookBook mCookBook = null;
-    List<Meal> mMealList = new ArrayList<Meal>();
     CookBookListAdapter mListAdapter;
+    ListView mMealListView;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +36,9 @@ public class CookBookFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_cook_book, container, false);
         mCookBook = CookBook.get(getContext());
-        mListAdapter = new CookBookListAdapter(getContext(), mMealList);
+        mListAdapter = new CookBookListAdapter(getContext(), mCookBook.getAllMeals());
+        mMealListView = (ListView) v.findViewById(R.id.cookBook_listView);
+        mMealListView.setAdapter(mListAdapter);
         Button addNew = (Button) v.findViewById(R.id.cookBook_addNewButton);
         addNew.setOnClickListener(this);
         return v;
