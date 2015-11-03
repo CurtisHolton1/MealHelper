@@ -26,32 +26,18 @@ public class DbHelper extends SQLiteOpenHelper {
                 + MealTable.Cols.PIC_PATH + ", "
                 + MealTable.Cols.RECIPE + ")" ;
         db.execSQL(statement);
-        statement = "create table " + IngredientTable.NAME + "( id integer primary key autoincrement, "
+        statement = "create table " + IngredientTable.NAME + "( " +IngredientTable.Cols.INGREDIENT_ID + " integer primary key autoincrement, "
                 + IngredientTable.Cols.MEAL_ID + ", "
                 + IngredientTable.Cols.NAME + ", "
                 + IngredientTable.Cols.AMOUNT +", "
-                + IngredientTable.Cols.UNIT + ")";
+                + IngredientTable.Cols.UNIT + ", foreign key(" +IngredientTable.Cols.MEAL_ID +") references " + MealTable.NAME+ "("+MealTable.Cols.MEAL_ID + "))";
         db.execSQL(statement);
-        statement = "create table " + MenuTable.NAME + "( id integer primary key autoincrement, "
+        statement = "create table " + MenuTable.NAME + "( " + MenuTable.Cols.Menu_ID + " integer primary key autoincrement, "
                 + MenuTable.Cols.MEAL + ", "
                 + MenuTable.Cols.DAY + ")";
         db.execSQL(statement);
-//        statement = "create table " + UnitTable.NAME + "( id integer primary key autoincrement, "
-//                + UnitTable.Cols.UNIT_ID + ", "
-//                + UnitTable.Cols.NAME + ")";
-//        db.execSQL(statement);
-//        initUnitTable(db);
-    }
 
-//    private void initUnitTable(SQLiteDatabase db){
-//        ContentValues values = new ContentValues();
-//        values.put(UnitTable.Cols.NAME, "Cup(s)");
-//        db.insert(UnitTable.NAME, null, values);
-//        values.put(UnitTable.Cols.NAME, "tsp(s)");
-//        db.insert(UnitTable.NAME, null, values);
-//        values.put(UnitTable.Cols.NAME, "Tbsp(s)");
-//        db.insert(UnitTable.NAME, null, values);
-//    }
+    }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion){

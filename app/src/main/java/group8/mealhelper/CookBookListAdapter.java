@@ -34,11 +34,10 @@ import group8.mealhelper.models.Meal;
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.cookbook_list_row, parent, false);
         ImageView imageView = (ImageView) rowView.findViewById(R.id.cookBook_list_row_image);
-        //BitmapFactory.Options options = new BitmapFactory.Options();
-        //options.inSampleSize = 30;
-        //Bitmap bitmap = BitmapFactory.decodeFile(mMeals.get(position).getPathToPic(), options);
-        String[] path = {mMeals.get(position).getPathToPic()};
-        new LocalPicTask(imageView).execute(path);
+        if(imageView.getDrawable() == null) {
+            String[] path = {mMeals.get(position).getPathToPic()};
+            new LocalPicTask(imageView).execute(path);
+        }
         TextView textView = (TextView) rowView.findViewById(R.id.cookBook_list_row_textView);
         textView.setText(mMeals.get(position).getName());
         return rowView;

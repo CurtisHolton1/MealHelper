@@ -34,16 +34,16 @@ public class CookBook {
         List<Meal> mealList = new ArrayList<Meal>();
         if(c.getCount()>0) {
             c.moveToFirst();
-            mealList.add(getMeal(c));
+            mealList.add(getMealAt(c));
             while(!c.isLast()) {
                 c.moveToNext();
-                mealList.add(getMeal(c));
+                mealList.add(getMealAt(c));
             }
         }
         return mealList;
     }
 
-    private Meal getMeal(Cursor c){
+    private Meal getMealAt(Cursor c){
         Meal meal = new Meal();
         meal.setId(c.getString(c.getColumnIndex(DbSchema.MealTable.Cols.MEAL_ID)));
         meal.setName(c.getString(c.getColumnIndex(DbSchema.MealTable.Cols.NAME)));
@@ -52,8 +52,10 @@ public class CookBook {
         return meal;
     }
 
-    private Cursor queryMeals(String whereClause, String [] whereArgs){
+    public Cursor queryMeals(String whereClause, String [] whereArgs){
     Cursor cursor = mDatabase.query(DbSchema.MealTable.NAME,null,whereClause,whereArgs,null,null,null);
         return cursor;
     }
+
+
 }

@@ -33,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import group8.mealhelper.database.DbHelper;
+import group8.mealhelper.database.DbSchema;
 import group8.mealhelper.database.DbSchema.MealTable;
 import group8.mealhelper.models.Ingredient;
 import group8.mealhelper.models.Meal;
@@ -236,7 +237,19 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
             values.put(MealTable.Cols.NAME, mTempMeal.getName());
             values.put(MealTable.Cols.PIC_PATH, mTempMeal.getPathToPic());
             values.put(MealTable.Cols.RECIPE, mTempMeal.getRecipe());
-            mDatabase.insert(MealTable.NAME, null,values);
+            long mealId= mDatabase.insert(MealTable.NAME, null,values);
+
+            //insert ingredients
+            values = new ContentValues();
+            for (Ingredient i:mTempMeal.getIngredientList()) {
+                values.put(DbSchema.IngredientTable.Cols.NAME, i.getName());
+                values.put(DbSchema.IngredientTable.Cols.AMOUNT,i.getAmount());
+                values.put(DbSchema.IngredientTable.Cols.UNIT,i.getUnits());
+                values.put(DbSchema.IngredientTable.Cols.MEAL_ID, mealId);
+                mDatabase.insert(DbSchema.IngredientTable.NAME, null, values);
+            }
+
+            
         }
         else {
             Context context = getContext();
