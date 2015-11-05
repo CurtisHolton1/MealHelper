@@ -251,8 +251,7 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
                 values.put(DbSchema.IngredientTable.Cols.MEAL_ID, mealId);
                 mDatabase.insert(DbSchema.IngredientTable.NAME, null, values);
             }
-            //Intent intent = new Intent(this.getActivity(),CookBookActivity.class);
-            //startActivity(intent);
+            mDatabase.close();
             this.getActivity().finish();
         }
         else {

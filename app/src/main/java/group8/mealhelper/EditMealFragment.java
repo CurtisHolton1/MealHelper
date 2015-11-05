@@ -14,7 +14,7 @@ import group8.mealhelper.database.DbHelper;
 /**
  * Created by curtis on 10/16/15.
  */
-public class HomeFragment extends Fragment implements View.OnClickListener {
+public class EditMealFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -23,21 +23,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_home, container, false);
-        Button cookBook = (Button) v.findViewById(R.id.home_cookBookButton);
-        cookBook.setOnClickListener(this);
-
+        View v = inflater.inflate(R.layout.fragment_add_meal, container, false);
         return v;
     }
 
     @Override
     public void onClick(View v) {
-        switch ((v.getId())) {
-            case R.id.home_cookBookButton:
-                Intent i = new Intent(getActivity(), CookBookActivity.class);
-                startActivity(i);
-                break;
 
         }
-    }
 }

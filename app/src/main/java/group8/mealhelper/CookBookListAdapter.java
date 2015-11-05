@@ -14,9 +14,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
-
-import group8.mealhelper.database.DbHelper;
-import group8.mealhelper.database.DbSchema;
 import group8.mealhelper.models.CookBook;
 import group8.mealhelper.models.Meal;
 
@@ -49,8 +46,8 @@ import group8.mealhelper.models.Meal;
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String[] id = {mMeals.get(position).getId()};
-                new deleteMealTask().execute(id);
+                String[] params = {mMeals.get(position).getId()};
+                new deleteMealTask().execute(params);
                 mMeals.remove(position);
                 notifyDataSetChanged();
 

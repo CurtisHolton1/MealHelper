@@ -24,6 +24,7 @@
         </activity>
         <activity android:name=".AddMealActivity">
         </activity>
+        <activity android:name=".EditMealActivity"></activity>
 
     </application>
 

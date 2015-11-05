@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
@@ -47,6 +48,13 @@ public class CookBookFragment extends Fragment implements View.OnClickListener {
         mMealListView.setAdapter(mListAdapter);
         Button addNew = (Button) v.findViewById(R.id.cookBook_addNewButton);
         addNew.setOnClickListener(this);
+       mMealListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+           @Override
+           public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+               Intent intent = new Intent(getActivity(),EditMealActivity.class);
+               startActivity(intent);
+           }
+       });
         return v;
     }
 
