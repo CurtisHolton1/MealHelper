@@ -31,12 +31,18 @@ public class CookBookFragment extends Fragment implements View.OnClickListener {
         super.onCreate(savedInstanceState);
 
     }
+    @Override
+    public void onResume(){
+        super.onResume();
+        mCookBook = CookBook.get(getContext());
+        mListAdapter = new CookBookListAdapter(getContext(), mCookBook.getAllMeals());
+        mMealListView.setAdapter(mListAdapter);
+        mListAdapter.notifyDataSetChanged();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_cook_book, container, false);
-        mCookBook = CookBook.get(getContext());
-        mListAdapter = new CookBookListAdapter(getContext(), mCookBook.getAllMeals());
         mMealListView = (ListView) v.findViewById(R.id.cookBook_listView);
         mMealListView.setAdapter(mListAdapter);
         Button addNew = (Button) v.findViewById(R.id.cookBook_addNewButton);

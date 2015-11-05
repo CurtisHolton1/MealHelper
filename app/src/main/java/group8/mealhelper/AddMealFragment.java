@@ -12,6 +12,7 @@ import android.os.Environment;
 import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -223,6 +224,8 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
         if (c.isChecked())
             c.toggle();
     }
+
+
     private void submitButtonClick(){
         //if valid save to DB
         mTempMeal.setName(mMealNameField.getText().toString());
@@ -248,8 +251,9 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
                 values.put(DbSchema.IngredientTable.Cols.MEAL_ID, mealId);
                 mDatabase.insert(DbSchema.IngredientTable.NAME, null, values);
             }
-
-            //// TODO: 11/3/15 leave activity 
+            //Intent intent = new Intent(this.getActivity(),CookBookActivity.class);
+            //startActivity(intent);
+            this.getActivity().finish();
         }
         else {
             Context context = getContext();
@@ -258,5 +262,7 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
         }
+
+
     }
 }
