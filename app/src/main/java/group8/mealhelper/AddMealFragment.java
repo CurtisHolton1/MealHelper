@@ -249,7 +249,7 @@ public class AddMealFragment extends Fragment implements View.OnClickListener {
                 mDatabase.insert(DbSchema.IngredientTable.NAME, null, values);
             }
 
-            
+            //// TODO: 11/3/15 leave activity 
         }
         else {
             Context context = getContext();

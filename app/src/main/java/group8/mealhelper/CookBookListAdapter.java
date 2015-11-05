@@ -1,6 +1,7 @@
 package group8.mealhelper;
 
 import android.content.Context;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -8,11 +9,15 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
 
+import group8.mealhelper.database.DbHelper;
+import group8.mealhelper.database.DbSchema;
+import group8.mealhelper.models.CookBook;
 import group8.mealhelper.models.Meal;
 
 /**
@@ -40,6 +45,17 @@ import group8.mealhelper.models.Meal;
         }
         TextView textView = (TextView) rowView.findViewById(R.id.cookBook_list_row_textView);
         textView.setText(mMeals.get(position).getName());
+        Button button = (Button) rowView.findViewById(R.id.cookBook_deleteButton);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                String[] id = {mMeals.get(position).getId()};
+                new deleteMealTask().execute(id);
+                mMeals.remove(position);
+                notifyDataSetChanged();
+
+            }
+        });
         return rowView;
     }
 
@@ -66,6 +82,22 @@ import group8.mealhelper.models.Meal;
             super.onPostExecute(result);
             mImageView.setImageBitmap(result);
         }
+    }
+
+    private class deleteMealTask extends AsyncTask<String,Void,Void>{
+
+        @Override
+        protected void onPreExecute(){
+
+        }
+
+        @Override
+        protected Void doInBackground(String... params){
+            CookBook.get(getContext()).deleteMeal(params[0]);
+            return null;
+        }
+
+
     }
 }
 

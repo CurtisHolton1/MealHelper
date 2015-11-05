@@ -51,7 +51,10 @@ public class CookBook {
         meal.setPathToPic(c.getString(c.getColumnIndex(DbSchema.MealTable.Cols.PIC_PATH)));
         return meal;
     }
-
+    public Void deleteMeal(String id) {
+        mDatabase.delete(DbSchema.MealTable.NAME, DbSchema.MealTable.Cols.MEAL_ID + " = " + id, null);
+        return null;
+    }
     public Cursor queryMeals(String whereClause, String [] whereArgs){
     Cursor cursor = mDatabase.query(DbSchema.MealTable.NAME,null,whereClause,whereArgs,null,null,null);
         return cursor;
