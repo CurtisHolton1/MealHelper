@@ -22,9 +22,8 @@
         <activity android:name=".CookBookActivity"
             android:parentActivityName=".HomeActivity">
         </activity>
-        <activity android:name=".AddMealActivity">
+        <activity android:name=".EditMealActivity">
         </activity>
-        <activity android:name=".EditMealActivity"></activity>
 
     </application>
 

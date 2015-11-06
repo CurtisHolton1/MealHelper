@@ -1,6 +1,7 @@
 package group8.mealhelper.models;
 import android.content.ContentValues;
 
+import java.io.Serializable;
 import java.util.List;
 
 import group8.mealhelper.database.DbSchema;
@@ -8,7 +9,7 @@ import group8.mealhelper.database.DbSchema;
 /**
  * Created by curtis on 10/16/15.
  */
-public class Meal {
+public class Meal implements Serializable {
     private String mId;
     private String mName;
     private String mPathToPic;
@@ -66,6 +67,12 @@ public class Meal {
         }
         return false;
     }
-
+public ContentValues getContentValues(){
+    ContentValues values = new ContentValues();
+    values.put(DbSchema.MealTable.Cols.NAME, getName());
+    values.put(DbSchema.MealTable.Cols.PIC_PATH, getPathToPic());
+    values.put(DbSchema.MealTable.Cols.RECIPE, getRecipe());
+    return values;
+}
 
 }

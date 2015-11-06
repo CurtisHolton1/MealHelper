@@ -17,14 +17,14 @@
     <string name="cookBook_addNewButton">Add New</string>
 <!--End: CookBook-->
 
-<!--Begin: AddMeal-->
-    <string name="addMeal_cameraButton">Take Picture</string>
+<!--Begin: EditMeal-->
+    <string name="editMeal_cameraButton">Take Picture</string>
     <string-array name="units_array">
         <item>Cup(s)</item>
         <item>tsp(s)</item>
         <item>Tbsp(s)</item>
         <item>Whole</item>
     </string-array>
-<!--End: AddMeal-->
+<!--End: EditMeal-->
 
 </resources>

@@ -51,6 +51,7 @@ public class CookBook {
         meal.setName(c.getString(c.getColumnIndex(DbSchema.MealTable.Cols.NAME)));
         meal.setRecipe(c.getString(c.getColumnIndex(DbSchema.MealTable.Cols.RECIPE)));
         meal.setPathToPic(c.getString(c.getColumnIndex(DbSchema.MealTable.Cols.PIC_PATH)));
+        meal.setIngredientList(getIngredientsForMeal(meal.getId()));
         return meal;
     }
 
@@ -59,14 +60,36 @@ public class CookBook {
         Cursor c = mDatabase.rawQuery("select * from " + DbSchema.MealTable.NAME + " where " + DbSchema.MealTable.Cols.MEAL_ID + " = " + id,null);
         if(c.getCount() >0) {
             c.moveToFirst();
-            meal.setId(c.getString(c.getColumnIndex(DbSchema.MealTable.Cols.MEAL_ID)));
-            meal.setName(c.getString(c.getColumnIndex(DbSchema.MealTable.Cols.NAME)));
-            meal.setRecipe(c.getString(c.getColumnIndex(DbSchema.MealTable.Cols.RECIPE)));
-            meal.setPathToPic(c.getString(c.getColumnIndex(DbSchema.MealTable.Cols.PIC_PATH)));
+            meal = getMealWithCursor(c);
         }
         c.close();
         return meal;
     }
+
+    public List<Ingredient> getIngredientsForMeal(String mealId){
+        Cursor c = mDatabase.rawQuery("select * from " + DbSchema.IngredientTable.NAME + " where " + DbSchema.IngredientTable.Cols.MEAL_ID + " = " + "\"" + mealId + "\"",null);
+        List<Ingredient> ingredients = new ArrayList<Ingredient>();
+            if(c.moveToFirst()){
+            ingredients.add(getIngredientWithCursor(c));
+            while(!c.isLast()) {
+                c.moveToNext();
+                ingredients.add(getIngredientWithCursor(c));
+            }
+        }
+        c.close();
+        return ingredients;
+    }
+
+    private Ingredient getIngredientWithCursor(Cursor c){
+        Ingredient ingredient = new Ingredient();
+        ingredient.setIngredientId(c.getString(c.getColumnIndex(DbSchema.IngredientTable.Cols.INGREDIENT_ID)));
+        ingredient.setMealId(c.getString(c.getColumnIndex(DbSchema.IngredientTable.Cols.MEAL_ID)));
+        ingredient.setName(c.getString(c.getColumnIndex(DbSchema.IngredientTable.Cols.NAME)));
+        ingredient.setAmount(Double.parseDouble(c.getString(c.getColumnIndex(DbSchema.IngredientTable.Cols.AMOUNT))));
+        ingredient.setUnits(c.getString(c.getColumnIndex(DbSchema.IngredientTable.Cols.UNIT)));
+        return  ingredient;
+        }
+
 
     public Void deleteMeal(String id) {
         Meal meal = getMealWithId(id);

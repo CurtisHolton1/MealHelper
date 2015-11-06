@@ -1,6 +1,5 @@
 package group8.mealhelper;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -8,13 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.List;
 
 import group8.mealhelper.models.CookBook;
 import group8.mealhelper.models.Meal;
@@ -52,7 +46,9 @@ public class CookBookFragment extends Fragment implements View.OnClickListener {
            @Override
            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                Intent intent = new Intent(getActivity(),EditMealActivity.class);
+               intent.putExtra("IncomingMeal", mListAdapter.getItem(position));
                startActivity(intent);
+
            }
        });
         return v;
@@ -63,7 +59,8 @@ public class CookBookFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch ((v.getId())) {
             case R.id.cookBook_addNewButton:
-                Intent i = new Intent(getActivity(), AddMealActivity.class);
+                Intent i = new Intent(getActivity(), EditMealActivity.class);
+                i.putExtra("IncomingMeal", new Meal());
                 startActivity(i);
                 break;
         }
