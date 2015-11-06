@@ -69,6 +69,9 @@ public class Meal implements Serializable {
     }
 public ContentValues getContentValues(){
     ContentValues values = new ContentValues();
+    if(getId()!= null){
+        values.put(DbSchema.MealTable.Cols.MEAL_ID,getId());
+    }
     values.put(DbSchema.MealTable.Cols.NAME, getName());
     values.put(DbSchema.MealTable.Cols.PIC_PATH, getPathToPic());
     values.put(DbSchema.MealTable.Cols.RECIPE, getRecipe());

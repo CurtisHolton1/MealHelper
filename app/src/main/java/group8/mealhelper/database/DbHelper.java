@@ -24,13 +24,15 @@ public class DbHelper extends SQLiteOpenHelper {
         String statement = "create table " + MealTable.NAME + "( " + MealTable.Cols.MEAL_ID + " integer primary key autoincrement, "
                 + MealTable.Cols.NAME + ", "
                 + MealTable.Cols.PIC_PATH + ", "
-                + MealTable.Cols.RECIPE + ")" ;
+                + MealTable.Cols.RECIPE + ", "
+                + "unique(" + MealTable.Cols.MEAL_ID + "))" ;
         db.execSQL(statement);
         statement = "create table " + IngredientTable.NAME + "( " +IngredientTable.Cols.INGREDIENT_ID + " integer primary key autoincrement, "
                 + IngredientTable.Cols.MEAL_ID + ", "
                 + IngredientTable.Cols.NAME + ", "
                 + IngredientTable.Cols.AMOUNT +", "
-                + IngredientTable.Cols.UNIT + ", foreign key(" +IngredientTable.Cols.MEAL_ID +") references " + MealTable.NAME+ "("+MealTable.Cols.MEAL_ID + "))";
+                + IngredientTable.Cols.UNIT + ", foreign key(" +IngredientTable.Cols.MEAL_ID +") references " + MealTable.NAME+ "("+MealTable.Cols.MEAL_ID + "), "
+                 + "unique(" + IngredientTable.Cols.INGREDIENT_ID+ "))";
         db.execSQL(statement);
         statement = "create table " + MenuTable.NAME + "( " + MenuTable.Cols.Menu_ID + " integer primary key autoincrement, "
                 + MenuTable.Cols.MEAL + ", "

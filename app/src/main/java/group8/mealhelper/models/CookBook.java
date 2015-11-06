@@ -57,7 +57,7 @@ public class CookBook {
 
     private Meal getMealWithId(String id){
         Meal meal = new Meal();
-        Cursor c = mDatabase.rawQuery("select * from " + DbSchema.MealTable.NAME + " where " + DbSchema.MealTable.Cols.MEAL_ID + " = " + id,null);
+        Cursor c = mDatabase.rawQuery("select * from " + DbSchema.MealTable.NAME + " where " + DbSchema.MealTable.Cols.MEAL_ID + " = " + "\"" + id + "\"",null);
         if(c.getCount() >0) {
             c.moveToFirst();
             meal = getMealWithCursor(c);
@@ -91,14 +91,22 @@ public class CookBook {
         }
 
 
-    public Void deleteMeal(String id) {
+    public void deleteMeal(String id) {
         Meal meal = getMealWithId(id);
         File file = new File(meal.getPathToPic());
         if(file.exists())
             file.delete();
-        mDatabase.delete(DbSchema.MealTable.NAME, DbSchema.MealTable.Cols.MEAL_ID + " = " + id, null);
-        return null;
+        for(Ingredient i: meal.getIngredientList()){
+            deleteIngredient(i);
+        }
+        mDatabase.delete(DbSchema.MealTable.NAME, DbSchema.MealTable.Cols.MEAL_ID + " = " + "\"" + id + "\"", null);
+        return;
     }
+
+    public void deleteIngredient(Ingredient ingredient){
+        mDatabase.delete(DbSchema.IngredientTable.NAME, DbSchema.IngredientTable.Cols.INGREDIENT_ID + " = " + "\"" + ingredient.getIngredientId() + "\"", null);
+    }
+
     public Cursor queryMeals(String whereClause, String [] whereArgs){
     Cursor cursor = mDatabase.query(DbSchema.MealTable.NAME,null,whereClause,whereArgs,null,null,null);
         return cursor;

@@ -1,9 +1,11 @@
 package group8.mealhelper.models;
 
 import android.content.ContentValues;
+import android.database.sqlite.SQLiteDatabase;
 
 import java.io.Serializable;
 
+import group8.mealhelper.database.DbHelper;
 import group8.mealhelper.database.DbSchema;
 
 /**
@@ -15,6 +17,10 @@ public class Ingredient implements Serializable{
     private String mName;
     private double mAmount;
     private String mUnits;
+
+    public Ingredient(){
+
+    }
 
     public String getMealId() {
         return mMealId;
@@ -56,9 +62,6 @@ public class Ingredient implements Serializable{
         mUnits = units;
     }
 
-    public  Ingredient(){
-
-    }
     public boolean isValid(){
         if (mName!= null && !mName.isEmpty() && mAmount != 0 && mUnits != null && !mUnits.isEmpty()){
         return true;
@@ -73,4 +76,6 @@ public class Ingredient implements Serializable{
         values.put(DbSchema.IngredientTable.Cols.MEAL_ID, getMealId());
         return values;
     }
+    
+
 }

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import java.io.BufferedReader;
 import java.util.List;
 
+import group8.mealhelper.models.CookBook;
 import group8.mealhelper.models.Ingredient;
 
 /**
@@ -41,7 +42,10 @@ public class IngredientListAdapter extends ArrayAdapter<Ingredient> {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                CookBook cookBook = CookBook.get(getContext());
+                cookBook.deleteIngredient(mIngredients.get(position));
                 mIngredients.remove(position);
+
                 notifyDataSetChanged();
             }
         });

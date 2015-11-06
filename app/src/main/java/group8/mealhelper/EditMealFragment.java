@@ -35,6 +35,7 @@ import java.util.List;
 import group8.mealhelper.database.DbHelper;
 import group8.mealhelper.database.DbSchema;
 import group8.mealhelper.database.DbSchema.MealTable;
+import group8.mealhelper.models.CookBook;
 import group8.mealhelper.models.Ingredient;
 import group8.mealhelper.models.Meal;
 
@@ -79,6 +80,7 @@ public class EditMealFragment extends Fragment implements View.OnClickListener {
         if(mTempMeal.getIngredientList()!=null) {
             mIngredientList = mTempMeal.getIngredientList();
         }
+
         mView = inflater.inflate(R.layout.fragment_edit_meal, container, false);
         mLayout = (RelativeLayout) mView.findViewById(R.id.editMeal_Layout);
         mDatabase = new DbHelper(getContext()).getWritableDatabase();
@@ -248,16 +250,26 @@ public class EditMealFragment extends Fragment implements View.OnClickListener {
             int duration = Toast.LENGTH_SHORT;
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
-            ContentValues values = mTempMeal.getContentValues();
-            long mealId= mDatabase.insert(MealTable.NAME, null,values);
-            mTempMeal.setId(Long.toString(mealId));
-            //insert ingredients
 
+            ContentValues values = mTempMeal.getContentValues();
+            if(mTempMeal.getId()!= null){
+                mDatabase.update(MealTable.NAME, values,MealTable.Cols.MEAL_ID + " = " + mTempMeal.getId(),null);
+            }else {
+                long mealId = mDatabase.insert(MealTable.NAME, null, values);
+                mTempMeal.setId(Long.toString(mealId));
+            }
+            //insert ingredients
             for (int j =0; j< mTempMeal.getIngredientList().size(); j++) {
                Ingredient i = mTempMeal.getIngredientList().get(j);
-                i.setMealId(Long.toString(mealId));
+                i.setMealId(mTempMeal.getId());
                 ContentValues ingredientValues = i.getContentValues();
-                mDatabase.insert(DbSchema.IngredientTable.NAME, null, ingredientValues);
+                if(i.getIngredientId()!=null){
+                    mDatabase.update(DbSchema.IngredientTable.NAME,ingredientValues, DbSchema.IngredientTable.Cols.INGREDIENT_ID  + " = " + i.getIngredientId(),null);
+                }
+                else{
+                    mDatabase.insert(DbSchema.IngredientTable.NAME, null, ingredientValues);
+                }
+
             }
             mDatabase.close();
             this.getActivity().finish();
