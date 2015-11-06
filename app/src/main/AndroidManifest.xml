@@ -25,6 +25,8 @@
         <activity android:name=".EditMealActivity">
         </activity>
 
+        <activity android:name=".WeeklyActivity"/>
+
     </application>
 
 </manifest>

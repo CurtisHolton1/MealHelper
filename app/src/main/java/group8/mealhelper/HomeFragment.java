@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 
 import group8.mealhelper.database.DbHelper;
+import group8.mealhelper.models.Ingredient;
 
 /**
  * Created by curtis on 10/16/15.
@@ -26,7 +27,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
         Button cookBook = (Button) v.findViewById(R.id.home_cookBookButton);
         cookBook.setOnClickListener(this);
-
+        Button weeklyButton = (Button) v.findViewById(R.id.home_weeklyMenuButton);
+        weeklyButton.setOnClickListener(this);
         return v;
     }
 
@@ -34,10 +36,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     public void onClick(View v) {
         switch ((v.getId())) {
             case R.id.home_cookBookButton:
-                Intent i = new Intent(getActivity(), CookBookActivity.class);
-                startActivity(i);
+                startActivity(new Intent(getActivity(), CookBookActivity.class));
                 break;
-
+            case R.id.home_weeklyMenuButton:
+                startActivity(new Intent(getActivity(),WeeklyActivity.class));
+                break;
         }
     }
 }
