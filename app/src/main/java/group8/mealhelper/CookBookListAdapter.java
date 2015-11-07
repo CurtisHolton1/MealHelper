@@ -42,7 +42,7 @@ import group8.mealhelper.models.Meal;
         }
         TextView textView = (TextView) rowView.findViewById(R.id.cookBook_list_row_textView);
         textView.setText(mMeals.get(position).getName());
-        Button button = (Button) rowView.findViewById(R.id.cookBook_deleteButton);
+        Button button = (Button) rowView.findViewById(R.id.cookBook_list_row_deleteButton);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

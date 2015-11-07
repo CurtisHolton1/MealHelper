@@ -10,7 +10,6 @@ public class CookBookActivity extends FragmentActivity {
     private final String TAG = ((Object) this)
             .getClass()
             .getSimpleName().toUpperCase();
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -20,6 +19,12 @@ public class CookBookActivity extends FragmentActivity {
 
         if (fragment == null) {
             fragment = new CookBookFragment();
+            if(getIntent().getExtras() !=null) {
+                String mode = getIntent().getExtras().getString("Mode");
+                Bundle bundle = new Bundle();
+                bundle.putString("Mode",mode);
+                fragment.setArguments(bundle);
+            }
             fm.beginTransaction()
                     .add(R.id.cookBook_fragment_container, fragment)
                     .commit();

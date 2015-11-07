@@ -26,5 +26,11 @@
         <item>Whole</item>
     </string-array>
 <!--End: EditMeal-->
+<!--Begin: Day-->
+    <string name="Breakfast">Breakfast</string>
+    <string name="Lunch">Lunch</string>
+    <string name="Dinner">Dinner</string>
+<!--End: Day-->
+
 
 </resources>
