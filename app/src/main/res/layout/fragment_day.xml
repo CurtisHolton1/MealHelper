@@ -12,13 +12,13 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"/>
 
-<TextView
-    android:id="@+id/day_breakfast_textView"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:text="@string/Breakfast"
-    android:textSize="25dp"
-    android:layout_below="@+id/day_title_textView"
+    <TextView
+        android:id="@+id/day_breakfast_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Breakfast"
+        android:textSize="25dp"
+        android:layout_below="@+id/day_title_textView"
     />
 
     <Button
@@ -31,28 +31,63 @@
        android:layout_alignBottom="@+id/day_breakfast_textView"
         />
 
-<group8.mealhelper.SingleMeal
-    android:id="@+id/day_breakfast_meal"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:layout_below="@+id/day_breakfast_textView"
-    android:visibility="invisible">
-</group8.mealhelper.SingleMeal>
+    <group8.mealhelper.SingleMeal
+        android:id="@+id/day_breakfast_meal"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_below="@+id/day_breakfast_textView"
+        android:visibility="invisible">
+    </group8.mealhelper.SingleMeal>
+
     <TextView
+        android:layout_below="@+id/day_breakfast_meal"
         android:id="@+id/day_lunch_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/Lunch"
-        android:textSize="20dp"
+        android:textSize="20dp"/>
 
-        />
+    <Button
+        android:id="@+id/day_lunch_button"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set"
+        android:layout_toRightOf="@+id/day_lunch_textView"
+        android:layout_alignBottom="@+id/day_lunch_textView"/>
+
+    <group8.mealhelper.SingleMeal
+        android:id="@+id/day_lunch_meal"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_below="@+id/day_lunch_textView"
+        android:visibility="invisible">
+    </group8.mealhelper.SingleMeal>
+
     <TextView
         android:id="@+id/day_dinner_textView"
+        android:layout_below="@+id/day_lunch_meal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/Dinner"
-        android:textSize="20dp"
-        />
+        android:textSize="20dp"/>
+
+    <Button
+        android:id="@+id/day_dinner_button"
+        style="?android:attr/buttonStyleSmall"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Set"
+        android:layout_toRightOf="@+id/day_dinner_textView"
+        android:layout_alignBottom="@+id/day_dinner_textView"/>
+
+    <group8.mealhelper.SingleMeal
+        android:id="@+id/day_dinner_meal"
+        android:layout_width="match_parent"
+        android:layout_height="90dp"
+        android:layout_below="@+id/day_dinner_textView"
+        android:visibility="invisible">
+    </group8.mealhelper.SingleMeal>
 
 
 

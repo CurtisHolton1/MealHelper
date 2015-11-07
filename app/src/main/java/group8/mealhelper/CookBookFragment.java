@@ -25,7 +25,7 @@ public class CookBookFragment extends Fragment implements View.OnClickListener {
     CookBookListAdapter mListAdapter;
     ListView mMealListView;
     String mMode;
-    private final int RESULT_MEAL_PICKED = 1;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,18 +52,16 @@ public class CookBookFragment extends Fragment implements View.OnClickListener {
         mMealListView.setAdapter(mListAdapter);
         Button addNew = (Button) v.findViewById(R.id.cookBook_addNewButton);
         addNew.setOnClickListener(this);
-        if(mMode != null && mMode.equals("PickMeal")){
+        if(mMode != null){
             addNew.setVisibility(View.INVISIBLE);
         }
         mMealListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                if(mMode!= null && mMode.equals("PickMeal")){
+                if(mMode!= null){
                     Intent intent = new Intent();
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable("MealResult", (Meal) mMealListView.getAdapter().getItem(position));
-                    intent.putExtra("MealResult", bundle);
-                    getActivity().setResult(Activity.RESULT_OK,intent);
+                    intent.putExtra("MealResult", (Meal) mMealListView.getAdapter().getItem(position));
+                    getActivity().setResult(Activity.RESULT_OK, intent);
                     getActivity().finish();
                 }
                 else {
