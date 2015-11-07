@@ -35,7 +35,6 @@ import java.util.List;
 import group8.mealhelper.database.DbHelper;
 import group8.mealhelper.database.DbSchema;
 import group8.mealhelper.database.DbSchema.MealTable;
-import group8.mealhelper.models.CookBook;
 import group8.mealhelper.models.Ingredient;
 import group8.mealhelper.models.Meal;
 
@@ -119,7 +118,7 @@ public class EditMealFragment extends Fragment implements View.OnClickListener {
                 return false;
             }
         });
-         mRecipeField = (EditText) mView.findViewById(R.id.editMeal_recipeText);
+        mRecipeField = (EditText) mView.findViewById(R.id.editMeal_recipeText);
         mRecipeField.setText(mTempMeal.getRecipe());
         Button submit = (Button) mView.findViewById(R.id.editMeal_submitButton);
         submit.setOnClickListener(this);

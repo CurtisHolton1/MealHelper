@@ -32,11 +32,13 @@ public class DbHelper extends SQLiteOpenHelper {
                 + IngredientTable.Cols.NAME + ", "
                 + IngredientTable.Cols.AMOUNT +", "
                 + IngredientTable.Cols.UNIT + ", foreign key(" +IngredientTable.Cols.MEAL_ID +") references " + MealTable.NAME+ "("+MealTable.Cols.MEAL_ID + "), "
-                 + "unique(" + IngredientTable.Cols.INGREDIENT_ID+ "))";
+                 + "unique(" + IngredientTable.Cols.INGREDIENT_ID + "))";
         db.execSQL(statement);
         statement = "create table " + MenuTable.NAME + "( " + MenuTable.Cols.Menu_ID + " integer primary key autoincrement, "
-                + MenuTable.Cols.MEAL + ", "
-                + MenuTable.Cols.DAY + ")";
+                + MenuTable.Cols.DAY + ", "
+                + MenuTable.Cols.MEAL_TYPE + ", "
+                + MenuTable.Cols.MEAL_ID + ", "
+                + "unique(" + MenuTable.Cols.Menu_ID + "))";
         db.execSQL(statement);
 
     }

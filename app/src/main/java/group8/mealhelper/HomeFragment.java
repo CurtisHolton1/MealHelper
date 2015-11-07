@@ -29,6 +29,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         cookBook.setOnClickListener(this);
         Button weeklyButton = (Button) v.findViewById(R.id.home_weeklyMenuButton);
         weeklyButton.setOnClickListener(this);
+        Button shoppingButton = (Button) v.findViewById(R.id.home_shoppingListButton);
+        shoppingButton.setOnClickListener(this);
         return v;
     }
 

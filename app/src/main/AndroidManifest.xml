@@ -26,7 +26,7 @@
         </activity>
 
         <activity android:name=".WeeklyActivity"/>
-
+        <activity android:name=".DayActivity"/>
     </application>
 
 </manifest>

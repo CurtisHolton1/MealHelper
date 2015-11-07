@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import java.util.List;
 
+import group8.mealhelper.models.Day;
 import group8.mealhelper.models.Ingredient;
 
 /**
@@ -17,9 +18,9 @@ import group8.mealhelper.models.Ingredient;
 public class DayListAdapter extends ArrayAdapter {
 
     private final Context mContext;
-    private final List<String> mDays;
+    private final List<Day> mDays;
 
-    public DayListAdapter(Context context, List<String> days) {
+    public DayListAdapter(Context context, List<Day> days) {
         super(context, -1, days);
         this.mContext = context;
         this.mDays = days;
@@ -30,7 +31,7 @@ public class DayListAdapter extends ArrayAdapter {
         LayoutInflater inflater = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View rowView = inflater.inflate(R.layout.weekly_list_row, parent, false);
         TextView textView = (TextView) rowView.findViewById(R.id.weekly_textView);
-        textView.setText(mDays.get(position));
+        textView.setText(mDays.get(position).getName());
         return rowView;
     }
 
