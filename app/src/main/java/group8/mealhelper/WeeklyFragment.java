@@ -38,7 +38,7 @@ public class WeeklyFragment extends Fragment implements View.OnClickListener {
         ListView listView = (ListView) v.findViewById(R.id.weekly_listView);
         listView.setAdapter(listAdapter);
         Calendar cal = Calendar.getInstance();
-        DateFormat df = new SimpleDateFormat("EEE dd/MM/yyyy");
+        DateFormat df = new SimpleDateFormat("EEE MM/dd");
         for (int i = 0; i < 7; i++) {
             Day day = new Day();
             day.setName(df.format(cal.getTime()));
