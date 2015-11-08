@@ -45,7 +45,6 @@ public class IngredientListAdapter extends ArrayAdapter<Ingredient> {
                 CookBook cookBook = CookBook.get(getContext());
                 cookBook.deleteIngredient(mIngredients.get(position));
                 mIngredients.remove(position);
-
                 notifyDataSetChanged();
             }
         });

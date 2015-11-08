@@ -26,6 +26,7 @@ import group8.mealhelper.models.Menu;
  */
 public class WeeklyFragment extends Fragment implements View.OnClickListener {
     private List<Day> mDayList;
+    private DayListAdapter mListAdapter;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,21 +36,10 @@ public class WeeklyFragment extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_weekly, container, false);
         mDayList = new ArrayList<Day>();
-        final DayListAdapter listAdapter = new DayListAdapter(getContext(), mDayList);
+        mListAdapter = new DayListAdapter(getContext(), mDayList);
         ListView listView = (ListView) v.findViewById(R.id.weekly_listView);
-        listView.setAdapter(listAdapter);
-        Calendar cal = Calendar.getInstance();
-        DateFormat df = new SimpleDateFormat("EEE MM/dd/yyyy");
-        for (int i = 0; i < 7; i++) {
-            Day day = new Day();
-            day.setName(df.format(cal.getTime()));
-            Day dayFromDB = Menu.get(getContext()).getDay(day.getName());
-            if(dayFromDB != null){
-                day = dayFromDB;
-            }
-            mDayList.add(day);
-            cal.add(Calendar.DATE, 1);
-        }
+        listView.setAdapter(mListAdapter);
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -65,8 +55,26 @@ public class WeeklyFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         switch ((v.getId())) {
-
-
         }
     }
+
+    @Override
+    public void onResume(){
+        super.onResume();
+        mDayList.clear();
+        Calendar cal = Calendar.getInstance();
+        DateFormat df = new SimpleDateFormat("EEE MM/dd/yyyy");
+        for (int i = 0; i < 7; i++) {
+            Day day = new Day();
+            day.setName(df.format(cal.getTime()));
+            Day dayFromDB = Menu.get(getContext()).getDay(day.getName());
+            if(dayFromDB != null){
+                day = dayFromDB;
+            }
+            mDayList.add(day);
+            cal.add(Calendar.DATE, 1);
+        }
+
+    }
+
 }
