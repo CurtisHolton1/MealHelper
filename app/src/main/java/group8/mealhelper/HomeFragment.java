@@ -8,6 +8,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import com.facebook.FacebookSdk;
+import com.facebook.login.widget.LoginButton;
 
 import group8.mealhelper.database.DbHelper;
 import group8.mealhelper.models.Ingredient;
@@ -25,12 +27,21 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
+
         Button cookBook = (Button) v.findViewById(R.id.home_cookBookButton);
         cookBook.setOnClickListener(this);
         Button weeklyButton = (Button) v.findViewById(R.id.home_weeklyMenuButton);
         weeklyButton.setOnClickListener(this);
         Button shoppingButton = (Button) v.findViewById(R.id.home_shoppingListButton);
         shoppingButton.setOnClickListener(this);
+
+
+        /*LoginButton loginButton = (LoginButton) v.findViewById(R.id.login_button);
+        loginButton.setReadPermissions("user_friends");
+        // If using in a fragment
+        loginButton.setFragment(this);
+        */
+
         return v;
     }
 
