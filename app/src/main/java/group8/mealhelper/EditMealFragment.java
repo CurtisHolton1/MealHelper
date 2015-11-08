@@ -28,6 +28,8 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.model.SharePhoto;
+import com.facebook.share.model.SharePhotoContent;
 import com.facebook.share.widget.ShareButton;
 
 import java.io.File;
@@ -127,8 +129,19 @@ public class EditMealFragment extends Fragment implements View.OnClickListener {
         Button submit = (Button) mView.findViewById(R.id.editMeal_submitButton);
         submit.setOnClickListener(this);
 
+        /*
         ShareLinkContent content = new ShareLinkContent.Builder()
                 .setContentUrl(Uri.parse("https://developers.facebook.com"))
+                .build();
+                */
+
+
+        Bitmap image = BitmapFactory.decodeFile(mTempMeal.getPathToPic());
+        SharePhoto photo = new SharePhoto.Builder()
+                .setBitmap(image)
+                .build();
+        SharePhotoContent content = new SharePhotoContent.Builder()
+                .addPhoto(photo)
                 .build();
         ShareButton shareButton = (ShareButton) mView.findViewById(R.id.editMeal_share_btn);
         shareButton.setShareContent(content);
