@@ -18,6 +18,8 @@ public class HomeActivity extends FragmentActivity {
             .getClass()
             .getSimpleName().toUpperCase();
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,6 +48,7 @@ public class HomeActivity extends FragmentActivity {
         super.onPause();
         Log.d(TAG, "onPause METHOD CALLED-");
     }
+
 //    @Override
 //    protected  void onStop(){
 //        super.onStop();
