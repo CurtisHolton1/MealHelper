@@ -26,6 +26,10 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareButton;
+
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -123,6 +127,11 @@ public class EditMealFragment extends Fragment implements View.OnClickListener {
         Button submit = (Button) mView.findViewById(R.id.editMeal_submitButton);
         submit.setOnClickListener(this);
 
+        ShareLinkContent content = new ShareLinkContent.Builder()
+                .setContentUrl(Uri.parse("https://developers.facebook.com"))
+                .build();
+        ShareButton shareButton = (ShareButton) mView.findViewById(R.id.editMeal_share_btn);
+        shareButton.setShareContent(content);
 
         return mView;
     }
@@ -239,7 +248,7 @@ public class EditMealFragment extends Fragment implements View.OnClickListener {
     }
 
 
-    private void submitButtonClick(){
+    private void submitButtonClick() {
         //if valid save to DB
         mTempMeal.setName(mMealNameField.getText().toString());
         mTempMeal.setRecipe(mRecipeField.getText().toString());

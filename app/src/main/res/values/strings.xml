@@ -9,6 +9,7 @@
     <string name="registerButton">Register</string>
     <string name="login">Log In</string>
     <string name="facebook_app_id">121081484920744</string>
+    <string name="share">Share</string>
 
 <!--Begin: Home-->
     <string name="home_cookBookButton">Cook Book</string>

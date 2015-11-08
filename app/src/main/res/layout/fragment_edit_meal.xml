@@ -190,6 +190,17 @@
             android:text="Submit"
             />
 
+        <com.facebook.share.widget.ShareButton
+            android:id="@+id/editMeal_share_btn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/editMeal_submitButton"
+            android:layout_centerHorizontal="true"
+            android:background="#3B5998"
+            android:layout_marginTop="10dp"
+            android:contentDescription="@string/share" />
+
+
 
     </RelativeLayout>
 </ScrollView>
