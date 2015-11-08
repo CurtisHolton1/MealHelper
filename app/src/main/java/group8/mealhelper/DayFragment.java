@@ -1,7 +1,9 @@
 package group8.mealhelper;
 
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
@@ -13,11 +15,11 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-
-import org.w3c.dom.Text;
-
+import group8.mealhelper.database.DbHelper;
+import group8.mealhelper.database.DbSchema;
 import group8.mealhelper.models.Day;
 import group8.mealhelper.models.Meal;
+
 
 /**
  * Created by curtis on 11/7/15.
@@ -27,6 +29,7 @@ public class DayFragment extends Fragment implements View.OnClickListener{
     SingleMeal mBreakfastMealView;
     SingleMeal mLunchMealView;
     SingleMeal mDinnerMealView;
+    SQLiteDatabase mDatabase;
     private final int RESULT_BREAKFAST_PICKED = 1;
     private final int RESULT_LUNCH_PICKED = 2;
     private final int RESULT_DINNER_PICKED = 3;
@@ -44,6 +47,7 @@ public class DayFragment extends Fragment implements View.OnClickListener{
         Bundle bundle = this.getArguments();
         mDay = (Day) bundle.getSerializable("Day");
         title.setText(mDay.getName());
+        //if meal already exists in DB
         Button breakfastButton = (Button) v.findViewById(R.id.day_breakfast_button);
         breakfastButton.setOnClickListener(this);
         Button lunchButton = (Button) v.findViewById(R.id.day_lunch_button);
@@ -53,6 +57,17 @@ public class DayFragment extends Fragment implements View.OnClickListener{
         mBreakfastMealView = (SingleMeal)v.findViewById(R.id.day_breakfast_meal);
         mLunchMealView = (SingleMeal)v.findViewById(R.id.day_lunch_meal);
         mDinnerMealView = (SingleMeal)v.findViewById(R.id.day_dinner_meal);
+        if(mDay.getId() !=null){
+            if(mDay.getBreakfast()!=null){
+                setBreakfastView(mDay.getBreakfast());
+            }
+            if(mDay.getLunch()!=null){
+                setLunchView(mDay.getLunch());
+            }
+            if(mDay.getDinner()!=null){
+                setDinnerView(mDay.getDinner());
+            }
+        }
         return v;
     }
 
@@ -78,39 +93,61 @@ public class DayFragment extends Fragment implements View.OnClickListener{
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent resultIntent){
+        DbHelper dbHelper= new DbHelper(getContext());
+        mDatabase = dbHelper.getWritableDatabase();
         if(resultCode == Activity.RESULT_OK && requestCode == RESULT_BREAKFAST_PICKED){
-            TextView textView = (TextView)mBreakfastMealView.findViewById(R.id.single_meal_textView);
             mDay.setBreakfast((Meal) resultIntent.getExtras().getSerializable("MealResult"));
-            textView.setText(mDay.getBreakfast().getName());
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inSampleSize = 30;
-            Bitmap bitmap = BitmapFactory.decodeFile(mDay.getBreakfast().getPathToPic(), options);
-            ImageView imageView = (ImageView) mBreakfastMealView.findViewById(R.id.single_meal_image);
-            imageView.setImageBitmap(bitmap);
-            mBreakfastMealView.setVisibility(View.VISIBLE);
+            setBreakfastView(mDay.getBreakfast());
         }
         else if(resultCode == Activity.RESULT_OK && requestCode == RESULT_LUNCH_PICKED){
-            TextView textView = (TextView)mLunchMealView.findViewById(R.id.single_meal_textView);
             mDay.setLunch((Meal) resultIntent.getExtras().getSerializable("MealResult"));
-            textView.setText(mDay.getLunch().getName());
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inSampleSize = 30;
-            Bitmap bitmap = BitmapFactory.decodeFile(mDay.getLunch().getPathToPic(), options);
-            ImageView imageView = (ImageView) mLunchMealView.findViewById(R.id.single_meal_image);
-            imageView.setImageBitmap(bitmap);
-            mLunchMealView.setVisibility(View.VISIBLE);
+            setLunchView(mDay.getLunch());
         }
         else if(resultCode == Activity.RESULT_OK && requestCode == RESULT_DINNER_PICKED){
-            TextView t = (TextView)mDinnerMealView.findViewById(R.id.single_meal_textView);
             mDay.setDinner((Meal) resultIntent.getExtras().getSerializable("MealResult"));
-            t.setText(mDay.getDinner().getName());
-            BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inSampleSize = 30;
-            Bitmap bitmap = BitmapFactory.decodeFile(mDay.getDinner().getPathToPic(), options);
-            ImageView imageView = (ImageView) mDinnerMealView.findViewById(R.id.single_meal_image);
-            imageView.setImageBitmap(bitmap);
-            mDinnerMealView.setVisibility(View.VISIBLE);
+            setDinnerView(mDay.getDinner());
         }
+        ContentValues values = mDay.getContentValues();
+        if(mDay.getId()!=null){
+            mDatabase.update(DbSchema.MenuTable.NAME,values, DbSchema.MenuTable.Cols.Menu_ID + " = " + mDay.getId(),null);
+        }
+        else {
+            mDatabase.insert(DbSchema.MenuTable.NAME, null, values);
+        }
+        mDatabase.close();
+    }
+
+    private void setBreakfastView(Meal breakfast){
+        TextView textView = (TextView)mBreakfastMealView.findViewById(R.id.single_meal_textView);
+        textView.setText(breakfast.getName());
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 30;
+        Bitmap bitmap = BitmapFactory.decodeFile(breakfast.getPathToPic(), options);
+        ImageView imageView = (ImageView) mBreakfastMealView.findViewById(R.id.single_meal_image);
+        imageView.setImageBitmap(bitmap);
+        mBreakfastMealView.setVisibility(View.VISIBLE);
+    }
+
+    private void setLunchView(Meal lunch){
+        TextView textView = (TextView)mLunchMealView.findViewById(R.id.single_meal_textView);
+        textView.setText(lunch.getName());
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 30;
+        Bitmap bitmap = BitmapFactory.decodeFile(lunch.getPathToPic(), options);
+        ImageView imageView = (ImageView) mLunchMealView.findViewById(R.id.single_meal_image);
+        imageView.setImageBitmap(bitmap);
+        mLunchMealView.setVisibility(View.VISIBLE);
+    }
+
+    private void setDinnerView(Meal dinner){
+        TextView textView = (TextView)mDinnerMealView.findViewById(R.id.single_meal_textView);
+        textView.setText(dinner.getName());
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inSampleSize = 30;
+        Bitmap bitmap = BitmapFactory.decodeFile(dinner.getPathToPic(), options);
+        ImageView imageView = (ImageView) mDinnerMealView.findViewById(R.id.single_meal_image);
+        imageView.setImageBitmap(bitmap);
+        mDinnerMealView.setVisibility(View.VISIBLE);
     }
 
 }

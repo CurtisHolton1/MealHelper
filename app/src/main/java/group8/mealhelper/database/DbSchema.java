@@ -36,8 +36,9 @@ public class DbSchema {
         public static final class Cols{
             public static final String Menu_ID = "id";
             public static final String DAY = "day";
-            public static final String MEAL_ID = "mealId";
-            public static final String MEAL_TYPE = "mealType";
+            public static final String BREAKFAST = "breakfastId";
+            public static final String LUNCH = "lunchId";
+            public static final String DINNER = "dinnerId";
         }
     }
 

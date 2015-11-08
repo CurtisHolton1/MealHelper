@@ -36,8 +36,9 @@ public class DbHelper extends SQLiteOpenHelper {
         db.execSQL(statement);
         statement = "create table " + MenuTable.NAME + "( " + MenuTable.Cols.Menu_ID + " integer primary key autoincrement, "
                 + MenuTable.Cols.DAY + ", "
-                + MenuTable.Cols.MEAL_TYPE + ", "
-                + MenuTable.Cols.MEAL_ID + ", "
+                + MenuTable.Cols.BREAKFAST + ", "
+                + MenuTable.Cols.LUNCH + ", "
+                + MenuTable.Cols.DINNER + ", "
                 + "unique(" + MenuTable.Cols.Menu_ID + "))";
         db.execSQL(statement);
 

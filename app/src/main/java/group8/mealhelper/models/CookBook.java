@@ -23,7 +23,7 @@ public class CookBook {
         if(sCookBook == null) {
             sCookBook = new CookBook(context);
         }
-        return  sCookBook;
+        return sCookBook;
     }
 
     private CookBook(Context context){
@@ -55,15 +55,15 @@ public class CookBook {
         return meal;
     }
 
-    private Meal getMealWithId(String id){
-        Meal meal = new Meal();
+    public Meal getMealWithId(String id){
         Cursor c = mDatabase.rawQuery("select * from " + DbSchema.MealTable.NAME + " where " + DbSchema.MealTable.Cols.MEAL_ID + " = " + "\"" + id + "\"",null);
         if(c.getCount() >0) {
             c.moveToFirst();
-            meal = getMealWithCursor(c);
+            Meal meal = getMealWithCursor(c);
+            return meal;
         }
         c.close();
-        return meal;
+        return null;
     }
 
     public List<Ingredient> getIngredientsForMeal(String mealId){
@@ -107,7 +107,7 @@ public class CookBook {
         mDatabase.delete(DbSchema.IngredientTable.NAME, DbSchema.IngredientTable.Cols.INGREDIENT_ID + " = " + "\"" + ingredient.getIngredientId() + "\"", null);
     }
 
-    public Cursor queryMeals(String whereClause, String [] whereArgs){
+    private Cursor queryMeals(String whereClause, String [] whereArgs){
     Cursor cursor = mDatabase.query(DbSchema.MealTable.NAME,null,whereClause,whereArgs,null,null,null);
         return cursor;
     }

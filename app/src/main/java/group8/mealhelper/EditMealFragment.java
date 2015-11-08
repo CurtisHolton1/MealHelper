@@ -268,7 +268,6 @@ public class EditMealFragment extends Fragment implements View.OnClickListener {
                 else{
                     mDatabase.insert(DbSchema.IngredientTable.NAME, null, ingredientValues);
                 }
-
             }
             mDatabase.close();
             this.getActivity().finish();
@@ -280,7 +279,5 @@ public class EditMealFragment extends Fragment implements View.OnClickListener {
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
         }
-
-
     }
 }

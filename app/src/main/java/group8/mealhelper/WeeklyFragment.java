@@ -19,6 +19,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import group8.mealhelper.models.Day;
+import group8.mealhelper.models.Menu;
 
 /**
  * Created by curtis on 11/6/15.
@@ -38,10 +39,14 @@ public class WeeklyFragment extends Fragment implements View.OnClickListener {
         ListView listView = (ListView) v.findViewById(R.id.weekly_listView);
         listView.setAdapter(listAdapter);
         Calendar cal = Calendar.getInstance();
-        DateFormat df = new SimpleDateFormat("EEE MM/dd");
+        DateFormat df = new SimpleDateFormat("EEE MM/dd/yyyy");
         for (int i = 0; i < 7; i++) {
             Day day = new Day();
             day.setName(df.format(cal.getTime()));
+            Day dayFromDB = Menu.get(getContext()).getDay(day.getName());
+            if(dayFromDB != null){
+                day = dayFromDB;
+            }
             mDayList.add(day);
             cal.add(Calendar.DATE, 1);
         }
