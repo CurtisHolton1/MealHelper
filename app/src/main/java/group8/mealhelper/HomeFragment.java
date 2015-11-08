@@ -83,6 +83,9 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             case R.id.home_weeklyMenuButton:
                 startActivity(new Intent(getActivity(),WeeklyActivity.class));
                 break;
+            case R.id.home_shoppingListButton:
+                startActivity(new Intent(getActivity(), ShoppingListActivity.class));
+                break;
         }
     }
 

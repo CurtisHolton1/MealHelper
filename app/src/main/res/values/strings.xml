@@ -32,6 +32,8 @@
     <string name="Breakfast">Breakfast</string>
     <string name="Lunch">Lunch</string>
     <string name="Dinner">Dinner</string>
+    <string name="title_activity_shopping_list">ShoppingListActivity</string>
+    <string name="hello_world">Hello world!</string>
 <!--End: Day-->
 
 

@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="group8.mealhelper" >
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
-    <uses-permission android:name="android.permission.INTERNET"/>
+
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -20,26 +21,33 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".CookBookActivity"
-            android:parentActivityName=".HomeActivity">
+        <activity
+            android:name=".CookBookActivity"
+            android:parentActivityName=".HomeActivity" >
         </activity>
-        <activity android:name=".EditMealActivity">
+        <activity android:name=".EditMealActivity" >
         </activity>
+        <activity android:name=".WeeklyActivity" />
+        <activity android:name=".DayActivity" />
+        <activity
+            android:name="com.facebook.FacebookActivity"
+            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
+            android:label="@string/app_name"
+            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
 
-        <activity android:name=".WeeklyActivity"/>
-        <activity android:name=".DayActivity"/>
+        <provider
+            android:name="com.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider121081484920744"
+            android:exported="true" />
 
-        <activity android:name="com.facebook.FacebookActivity"
-                  android:configChanges=
-                      "keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-                  android:theme="@android:style/Theme.Translucent.NoTitleBar"
-                  android:label="@string/app_name" />
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/facebook_app_id" />
 
-        <provider android:authorities="com.facebook.app.FacebookContentProvider121081484920744"
-                  android:name="com.facebook.FacebookContentProvider"
-                  android:exported="true"/>
-
-        <meta-data android:name="com.facebook.sdk.ApplicationId" android:value="@string/facebook_app_id"/>
+        <activity
+            android:name=".ShoppingListActivity"
+            android:label="@string/title_activity_shopping_list" >
+        </activity>
     </application>
 
 </manifest>
