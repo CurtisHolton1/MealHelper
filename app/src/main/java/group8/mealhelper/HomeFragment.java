@@ -22,6 +22,7 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.FacebookSdk;
 import com.facebook.Profile;
+import com.facebook.ProfileTracker;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.facebook.login.widget.ProfilePictureView;
@@ -47,6 +48,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
     CallbackManager callbackManager;
     ProfilePictureView mProfilePictureView;
+    ProfileTracker profileTracker;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
@@ -63,20 +65,18 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         loginButton.setReadPermissions("user_friends");
         // If using in a fragment
         loginButton.setFragment(this);
-        callbackManager = CallbackManager.Factory.create();
+        //callbackManager = CallbackManager.Factory.create();
 
         mProfilePictureView = (ProfilePictureView) v.findViewById(R.id.profile_picture);
 
 
 
-
+        callbackManager = CallbackManager.Factory.create();
         // Callback registration
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
-                CharSequence text = "Hello " + Profile.getCurrentProfile().getFirstName();
-                Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT)
-                        .show();
+                // App Code
             }
 
             @Override
@@ -88,20 +88,24 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             public void onError(FacebookException exception) {
                 // App code
             }
+
         });
 
-        AccessTokenTracker accessTokenTracker= new AccessTokenTracker()
-        {
+        profileTracker = new ProfileTracker() {
             @Override
-            protected void onCurrentAccessTokenChanged(AccessToken oldToken, AccessToken newToken) {
-                if (newToken == null){
+            protected void onCurrentProfileChanged(
+                    Profile oldProfile,
+                    Profile currentProfile) {
+                if (currentProfile == null){
                     mProfilePictureView.setProfileId(null);
                 } else {
+                    CharSequence text = "Hello " + Profile.getCurrentProfile().getFirstName();
+                    Toast.makeText(getActivity(), text, Toast.LENGTH_SHORT)
+                            .show();
                     mProfilePictureView.setProfileId(Profile.getCurrentProfile().getId());
                 }
             }
         };
-
 
         return v;
     }
@@ -125,6 +129,12 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        profileTracker.stopTracking();
     }
 
 }
