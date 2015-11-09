@@ -2,7 +2,11 @@ package group8.mealhelper;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,6 +15,8 @@ import android.widget.Button;
 import android.widget.Toast;
 import android.widget.TextView;
 
+import com.facebook.AccessToken;
+import com.facebook.AccessTokenTracker;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -18,6 +24,12 @@ import com.facebook.FacebookSdk;
 import com.facebook.Profile;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.facebook.login.widget.ProfilePictureView;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import group8.mealhelper.database.DbHelper;
 import group8.mealhelper.models.Ingredient;
@@ -27,12 +39,14 @@ import group8.mealhelper.models.Ingredient;
  */
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
     CallbackManager callbackManager;
+    ProfilePictureView mProfilePictureView;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_home, container, false);
@@ -50,6 +64,11 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         // If using in a fragment
         loginButton.setFragment(this);
         callbackManager = CallbackManager.Factory.create();
+
+        mProfilePictureView = (ProfilePictureView) v.findViewById(R.id.profile_picture);
+
+
+
 
         // Callback registration
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
@@ -70,6 +89,19 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
                 // App code
             }
         });
+
+        AccessTokenTracker accessTokenTracker= new AccessTokenTracker()
+        {
+            @Override
+            protected void onCurrentAccessTokenChanged(AccessToken oldToken, AccessToken newToken) {
+                if (newToken == null){
+                    mProfilePictureView.setProfileId(null);
+                } else {
+                    mProfilePictureView.setProfileId(Profile.getCurrentProfile().getId());
+                }
+            }
+        };
+
 
         return v;
     }
@@ -94,4 +126,5 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
     }
+
 }
