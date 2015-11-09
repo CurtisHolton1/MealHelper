@@ -26,7 +26,6 @@ public class DbSchema {
             public static final String NAME = "name";
             public static final String AMOUNT = "amount";
             public static final String UNIT = "unit";
-
         }
     }
 
