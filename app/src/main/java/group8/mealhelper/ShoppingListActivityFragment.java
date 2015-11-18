@@ -45,16 +45,14 @@ public class ShoppingListActivityFragment extends Fragment {
         public void bindIngredientItem(IngredientItem i) {
             mIngredient = i;
             mTitleTextView.setText(i.getAmount() + " " + i.getUnits() + " " + i.getName());
-            mboughtCheckBox.setChecked(false);
+            mboughtCheckBox.setChecked(i.isBought());
         }
 
         @Override
         public void onClick(View v) {
             switch ((v.getId())) {
                 case R.id.list_shopping_item_checkbox:
-                    Toast.makeText(getActivity(),
-                            mIngredient.getName() + " clicked!", Toast.LENGTH_SHORT)
-                            .show();
+                    mIngredient.toggleBought(getActivity());
                     break;
             }
         }

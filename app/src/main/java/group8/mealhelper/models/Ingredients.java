@@ -1,5 +1,6 @@
 package group8.mealhelper.models;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -30,53 +31,40 @@ public class Ingredients {
                 .getWritableDatabase();
         mIngredients = new ArrayList<IngredientItem>();
 
-        queryIngredients("breakfast");
-        queryIngredients("lunch");
-        queryIngredients("dinner");
+        queryShoppingList();
     }
 
-    private void queryIngredients(String meal) {
-        String q = "SELECT ingredients.name, ingredients.unit, ingredients.amount " +
-                "FROM ingredients, meals, menu " +
-                "WHERE ingredients.mealId = meals.id AND meals.id = menu."+meal+"Id";
+    private void queryShoppingList() {
+
+        String q = "SELECT * From " + DbSchema.ShoppingListTable.NAME;
         Cursor cursor = mDatabase.rawQuery(q, null);
 
-        Ingredient i;
         try {
             cursor.moveToFirst();
             while (!cursor.isAfterLast()) {
+                int id = cursor.getInt(cursor.getColumnIndex(
+                        DbSchema.ShoppingListTable.Cols.SHOPPINGLIST_ID));
                 String name = cursor.getString(
-                        cursor.getColumnIndex(DbSchema.IngredientTable.Cols.NAME));
-                String amount = cursor.getString(
-                        cursor.getColumnIndex(DbSchema.IngredientTable.Cols.AMOUNT));
+                        cursor.getColumnIndex(DbSchema.ShoppingListTable.Cols.NAME));
+                double amount = cursor.getDouble(
+                        cursor.getColumnIndex(DbSchema.ShoppingListTable.Cols.AMOUNT));
                 String unit = cursor.getString(
-                        cursor.getColumnIndex(DbSchema.IngredientTable.Cols.UNIT));
-                i = new Ingredient();
-                i.setName(name);
-                i.setAmount(Integer.parseInt(amount));
-                i.setUnits(unit);
-                IngredientItem a = new IngredientItem(i);
-                int index = indexOfIngredient(mIngredients, a);
-                if (index >= 0){
-                    IngredientItem duplicate = mIngredients.get(index);
-                    duplicate.incrementAmount(a.getAmount());
+                        cursor.getColumnIndex(DbSchema.ShoppingListTable.Cols.UNIT));
+                String bought = cursor.getString(
+                        cursor.getColumnIndex(DbSchema.ShoppingListTable.Cols.BOUGHT));
+                boolean b;
+                if (bought.equals("TRUE")) {
+                    b = true;
                 } else {
-                    mIngredients.add(a);
+                    b = false;
                 }
+                IngredientItem i = new IngredientItem(id, name, amount, unit, b);
+
+                mIngredients.add(i);
                 cursor.moveToNext();
             }
         } finally {
             cursor.close();
         }
-    }
-
-    private static int indexOfIngredient(List<IngredientItem> l, IngredientItem i) {
-        int index = -1;
-        for (IngredientItem next : l) {
-            if (next.getName().equals(i.getName())) {
-                index = l.indexOf(next);
-            }
-        }
-        return index;
     }
 }

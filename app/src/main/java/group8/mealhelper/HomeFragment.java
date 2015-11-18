@@ -65,11 +65,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         loginButton.setReadPermissions("user_friends");
         // If using in a fragment
         loginButton.setFragment(this);
-        //callbackManager = CallbackManager.Factory.create();
 
         mProfilePictureView = (ProfilePictureView) v.findViewById(R.id.profile_picture);
-
-
 
         callbackManager = CallbackManager.Factory.create();
         // Callback registration
@@ -86,7 +83,8 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
 
             @Override
             public void onError(FacebookException exception) {
-                // App code
+                Toast.makeText(getActivity(), "Failed", Toast.LENGTH_LONG)
+                        .show();
             }
 
         });
@@ -96,6 +94,7 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
             protected void onCurrentProfileChanged(
                     Profile oldProfile,
                     Profile currentProfile) {
+
                 if (currentProfile == null){
                     mProfilePictureView.setProfileId(null);
                 } else {

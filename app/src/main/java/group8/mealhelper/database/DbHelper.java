@@ -42,6 +42,14 @@ public class DbHelper extends SQLiteOpenHelper {
                 + "unique(" + MenuTable.Cols.Menu_ID + "))";
         db.execSQL(statement);
 
+        statement = "create table " + ShoppingListTable.NAME + "( " + ShoppingListTable.Cols.SHOPPINGLIST_ID + " integer primary key autoincrement, "
+                + ShoppingListTable.Cols.NAME + ", "
+                + ShoppingListTable.Cols.AMOUNT + ", "
+                + ShoppingListTable.Cols.UNIT + ", "
+                + ShoppingListTable.Cols.BOUGHT + ", "
+                + "unique(" + ShoppingListTable.Cols.SHOPPINGLIST_ID + "))";
+        db.execSQL(statement);
+
     }
 
     @Override

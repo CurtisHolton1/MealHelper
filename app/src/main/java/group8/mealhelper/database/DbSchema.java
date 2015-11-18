@@ -41,6 +41,18 @@ public class DbSchema {
         }
     }
 
+
+    public static final class ShoppingListTable {
+        public static final String NAME = "shoppingList";
+
+        public static final class Cols {
+            public static final String SHOPPINGLIST_ID = "id";
+            public static final String NAME = "name";
+            public static final String AMOUNT = "amount";
+            public static final String UNIT = "unit";
+            public static final String BOUGHT = "bought";
+        }
+    }
 //    public static final class UnitTable{
 //        public static final String NAME = "units";
 //
