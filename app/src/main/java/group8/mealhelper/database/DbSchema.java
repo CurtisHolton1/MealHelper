@@ -53,12 +53,4 @@ public class DbSchema {
             public static final String BOUGHT = "bought";
         }
     }
-//    public static final class UnitTable{
-//        public static final String NAME = "units";
-//
-//        public static final class Cols{
-//            public static final String UNIT_ID = "id";
-//            public static final String NAME = "name";
-//        }
-    //}
 }

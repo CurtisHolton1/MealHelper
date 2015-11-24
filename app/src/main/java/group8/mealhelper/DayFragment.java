@@ -29,7 +29,6 @@ public class DayFragment extends Fragment implements View.OnClickListener{
     SingleMeal mBreakfastMealView;
     SingleMeal mLunchMealView;
     SingleMeal mDinnerMealView;
-    SQLiteDatabase mDatabase;
     private final int RESULT_BREAKFAST_PICKED = 1;
     private final int RESULT_LUNCH_PICKED = 2;
     private final int RESULT_DINNER_PICKED = 3;
@@ -94,7 +93,7 @@ public class DayFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent resultIntent){
         DbHelper dbHelper= new DbHelper(getContext());
-        mDatabase = dbHelper.getWritableDatabase();
+        SQLiteDatabase database = dbHelper.getWritableDatabase();
         if(resultCode == Activity.RESULT_OK && requestCode == RESULT_BREAKFAST_PICKED){
             mDay.setBreakfast((Meal) resultIntent.getExtras().getSerializable("MealResult"));
             setBreakfastView(mDay.getBreakfast());
@@ -109,19 +108,20 @@ public class DayFragment extends Fragment implements View.OnClickListener{
         }
         ContentValues values = mDay.getContentValues();
         if(mDay.getId()!=null){
-            mDatabase.update(DbSchema.MenuTable.NAME,values, DbSchema.MenuTable.Cols.Menu_ID + " = " + mDay.getId(),null);
+            database.update(DbSchema.MenuTable.NAME,values, DbSchema.MenuTable.Cols.Menu_ID + " = " + mDay.getId(),null);
         }
         else {
-            mDatabase.insert(DbSchema.MenuTable.NAME, null, values);
+            long generatedId = database.insert(DbSchema.MenuTable.NAME, null, values);
+            mDay.setId(Long.toString(generatedId));
         }
-        mDatabase.close();
+        database.close();
     }
 
     private void setBreakfastView(Meal breakfast){
         TextView textView = (TextView)mBreakfastMealView.findViewById(R.id.single_meal_textView);
         textView.setText(breakfast.getName());
         BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inSampleSize = 30;
+        options.inSampleSize = 32;
         Bitmap bitmap = BitmapFactory.decodeFile(breakfast.getPathToPic(), options);
         ImageView imageView = (ImageView) mBreakfastMealView.findViewById(R.id.single_meal_image);
         imageView.setImageBitmap(bitmap);
@@ -132,7 +132,7 @@ public class DayFragment extends Fragment implements View.OnClickListener{
         TextView textView = (TextView)mLunchMealView.findViewById(R.id.single_meal_textView);
         textView.setText(lunch.getName());
         BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inSampleSize = 30;
+        options.inSampleSize = 32;
         Bitmap bitmap = BitmapFactory.decodeFile(lunch.getPathToPic(), options);
         ImageView imageView = (ImageView) mLunchMealView.findViewById(R.id.single_meal_image);
         imageView.setImageBitmap(bitmap);
@@ -143,7 +143,7 @@ public class DayFragment extends Fragment implements View.OnClickListener{
         TextView textView = (TextView)mDinnerMealView.findViewById(R.id.single_meal_textView);
         textView.setText(dinner.getName());
         BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inSampleSize = 30;
+        options.inSampleSize = 32;
         Bitmap bitmap = BitmapFactory.decodeFile(dinner.getPathToPic(), options);
         ImageView imageView = (ImageView) mDinnerMealView.findViewById(R.id.single_meal_image);
         imageView.setImageBitmap(bitmap);
