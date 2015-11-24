@@ -47,33 +47,23 @@ import group8.mealhelper.models.Meal;
 
 /**
  * Created by curtis on 10/16/15.
+ * Handles the editing and adding new meals
  */
 
 public class EditMealFragment extends Fragment implements View.OnClickListener {
-
     private final String TAG = ((Object) this)
             .getClass()
             .getSimpleName().toUpperCase();
     public static int IMAGE_CAPTURED = 1;
     static final int REQUEST_IMAGE_CAPTURE = 1;
     public final static String APP_PATH_SD_CARD = "/MealHelper";
-    RelativeLayout mLayout;
     View mView;
-    String mCurrentPhotoPath = null;
-    ImageView mImageView = null;
-    EditText mMealNameField;
-    EditText mIngredientField;
-    EditText mIngredientAmountField;
-    EditText mRecipeField;
-    ListView mIngredientListView;
     IngredientListAdapter mListAdapter;
-    ShareButton mShareButton;
     List<Ingredient> mIngredientList = new ArrayList<>();
     Spinner mUnitSpinner;
     CheckBox mCheckBox = null;
     Ingredient mTempIngredient = new Ingredient();
     Meal mTempMeal = new Meal();
-    SQLiteDatabase  mDatabase;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -83,24 +73,20 @@ public class EditMealFragment extends Fragment implements View.OnClickListener {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         Bundle bundle = this.getArguments();
+        mView = inflater.inflate(R.layout.fragment_edit_meal, container, false);
         mTempMeal = (Meal) bundle.getSerializable("IncomingMeal");
         if(mTempMeal.getIngredientList()!=null) {
             mIngredientList = mTempMeal.getIngredientList();
+            EditText mealNameField = (EditText) mView.findViewById(R.id.editMeal_mealName_EditText);
+            mealNameField.setText(mTempMeal.getName());
+            EditText recipeField = (EditText) mView.findViewById(R.id.editMeal_recipeText);
+            recipeField.setText(mTempMeal.getRecipe());
         }
 
-        mView = inflater.inflate(R.layout.fragment_edit_meal, container, false);
-        mLayout = (RelativeLayout) mView.findViewById(R.id.editMeal_Layout);
-        mDatabase = new DbHelper(getContext()).getWritableDatabase();
-        mMealNameField = (EditText) mView.findViewById(R.id.editMeal_mealName_EditText);
-        mMealNameField.setText(mTempMeal.getName());
         Button cameraButton = (Button) mView.findViewById(R.id.editMeal_cameraButton);
         cameraButton.setOnClickListener(this);
-
-        mImageView = (ImageView) mView.findViewById(R.id.editMeal_imageView);
-        new setPicTask(mImageView).execute();
-
-        mIngredientField = (EditText) mView.findViewById(R.id.editMeal_ingredientTable_editText);
-        mIngredientAmountField = (EditText) mView.findViewById(R.id.editMeal_ingredientTable_editText2);
+        ImageView imageView = (ImageView) mView.findViewById(R.id.editMeal_imageView);
+        new setPicTask(imageView).execute();
         mUnitSpinner = (Spinner) mView.findViewById(R.id.editMeal_ingredientTable_spinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(), R.array.units_array, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -113,10 +99,10 @@ public class EditMealFragment extends Fragment implements View.OnClickListener {
                     ingredientCheck();
             }
         });
-        mIngredientListView = (ListView) mView.findViewById(R.id.editMeal_ingredientList);
+        ListView ingredientListView = (ListView) mView.findViewById(R.id.editMeal_ingredientList);
         mListAdapter = new IngredientListAdapter(getContext(), mIngredientList);
-        mIngredientListView.setAdapter(mListAdapter);
-        mIngredientListView.setOnTouchListener(new View.OnTouchListener() {
+        ingredientListView.setAdapter(mListAdapter);
+        ingredientListView.setOnTouchListener(new View.OnTouchListener() {
             // Setting on Touch Listener for handling the touch inside ScrollView
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -125,23 +111,13 @@ public class EditMealFragment extends Fragment implements View.OnClickListener {
                 return false;
             }
         });
-        mRecipeField = (EditText) mView.findViewById(R.id.editMeal_recipeText);
-        mRecipeField.setText(mTempMeal.getRecipe());
         Button submit = (Button) mView.findViewById(R.id.editMeal_submitButton);
         submit.setOnClickListener(this);
-
-
-        mShareButton = (ShareButton) mView.findViewById(R.id.editMeal_share_btn);
-
-
-
-
         /*
         ShareLinkContent content = new ShareLinkContent.Builder()
                 .setContentUrl(Uri.parse("https://developers.facebook.com"))
                 .build();
                 */
-
 
 //        Bitmap image = BitmapFactory.decodeFile(mTempMeal.getPathToPic());
 //        SharePhoto photo = new SharePhoto.Builder()
@@ -152,7 +128,6 @@ public class EditMealFragment extends Fragment implements View.OnClickListener {
 //                .build();
 //        ShareButton shareButton = (ShareButton) mView.findViewById(R.id.editMeal_share_btn);
 //        shareButton.setShareContent(content);
-
         return mView;
     }
 
@@ -172,7 +147,8 @@ public class EditMealFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent cameraIntent) {
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_CAPTURED) {
-            new setPicTask(mImageView).execute();
+            ImageView imageView = (ImageView) mView.findViewById(R.id.editMeal_imageView);
+            new setPicTask(imageView).execute();
         }
     }
 
@@ -206,10 +182,12 @@ public class EditMealFragment extends Fragment implements View.OnClickListener {
 
 
     private void ingredientCheck() {
-        mTempIngredient.setName(mIngredientField.getText().toString());
+        EditText ingredientField = (EditText) mView.findViewById(R.id.editMeal_ingredientTable_editText);
+        mTempIngredient.setName(ingredientField.getText().toString());
         mTempIngredient.setUnits(mUnitSpinner.getSelectedItem().toString());
-        if (!mIngredientAmountField.getText().toString().isEmpty())
-            mTempIngredient.setAmount(Double.parseDouble(mIngredientAmountField.getText().toString()));
+        EditText ingredientAmountField = (EditText) mView.findViewById(R.id.editMeal_ingredientTable_editText2);
+        if (!ingredientAmountField.getText().toString().isEmpty())
+            mTempIngredient.setAmount(Double.parseDouble(ingredientAmountField.getText().toString()));
         if (mTempIngredient.isValid()) {
             if (!mIngredientList.contains(mTempIngredient)) {
                 mIngredientList.add(mTempIngredient);
@@ -250,20 +228,22 @@ public class EditMealFragment extends Fragment implements View.OnClickListener {
 
     private void submitButtonClick() {
         //if valid save to DB
-        mTempMeal.setName(mMealNameField.getText().toString());
-        mTempMeal.setRecipe(mRecipeField.getText().toString());
+        SQLiteDatabase database = new DbHelper(getContext()).getWritableDatabase();
+        EditText mealNameField = (EditText) mView.findViewById(R.id.editMeal_mealName_EditText);
+        mTempMeal.setName(mealNameField.getText().toString());
+        EditText recipeField = (EditText) mView.findViewById(R.id.editMeal_recipeText);
+        mTempMeal.setRecipe(recipeField.getText().toString());
         if (mTempMeal.isValid()){
             Context context = getContext();
             CharSequence text = "Adding Meal";
             int duration = Toast.LENGTH_SHORT;
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
-
             ContentValues values = mTempMeal.getContentValues();
             if(mTempMeal.getId()!= null){
-                mDatabase.update(MealTable.NAME, values,MealTable.Cols.MEAL_ID + " = " + mTempMeal.getId(),null);
+                database.update(MealTable.NAME, values,MealTable.Cols.MEAL_ID + " = " + mTempMeal.getId(),null);
             }else {
-                long mealId = mDatabase.insert(MealTable.NAME, null, values);
+                long mealId = database.insert(MealTable.NAME, null, values);
                 mTempMeal.setId(Long.toString(mealId));
             }
             //insert ingredients
@@ -272,13 +252,13 @@ public class EditMealFragment extends Fragment implements View.OnClickListener {
                 i.setMealId(mTempMeal.getId());
                 ContentValues ingredientValues = i.getContentValues();
                 if(i.getIngredientId()!=null){
-                    mDatabase.update(DbSchema.IngredientTable.NAME,ingredientValues, DbSchema.IngredientTable.Cols.INGREDIENT_ID  + " = " + i.getIngredientId(),null);
+                    database.update(DbSchema.IngredientTable.NAME,ingredientValues, DbSchema.IngredientTable.Cols.INGREDIENT_ID  + " = " + i.getIngredientId(),null);
                 }
                 else{
-                    mDatabase.insert(DbSchema.IngredientTable.NAME, null, ingredientValues);
+                    database.insert(DbSchema.IngredientTable.NAME, null, ingredientValues);
                 }
             }
-            mDatabase.close();
+            database.close();
             this.getActivity().finish();
         }
         else {
@@ -289,6 +269,7 @@ public class EditMealFragment extends Fragment implements View.OnClickListener {
             toast.show();
         }
     }
+
     private class setPicTask extends AsyncTask<String,Void,Bitmap> {
         ImageView mImageView;
         public setPicTask(ImageView imageView){
@@ -301,14 +282,13 @@ public class EditMealFragment extends Fragment implements View.OnClickListener {
 
         @Override
         protected Bitmap doInBackground(String... params){
-            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-            bmOptions.inJustDecodeBounds = true;
-            BitmapFactory.decodeFile(mTempMeal.getPathToPic(), bmOptions);
-            bmOptions.inJustDecodeBounds = false;
-            bmOptions.inSampleSize = 4;
-            bmOptions.inPurgeable = true;
-            Bitmap bitmap = BitmapFactory.decodeFile(mTempMeal.getPathToPic(), bmOptions);
-            return  bitmap;
+            if(mTempMeal.getPathToPic()!=null) {
+                BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+                bmOptions.inSampleSize = 16;
+                Bitmap bitmap = BitmapFactory.decodeFile(mTempMeal.getPathToPic(), bmOptions);
+                return bitmap;
+            }
+            return null;
         }
 
         @Override
@@ -320,9 +300,12 @@ public class EditMealFragment extends Fragment implements View.OnClickListener {
             SharePhotoContent content = new SharePhotoContent.Builder()
                     .addPhoto(photo)
                     .build();
-            mShareButton.setShareContent(content);
+            ShareButton shareButton = (ShareButton) mView.findViewById(R.id.editMeal_share_btn);
+            shareButton.setShareContent(content);
             mImageView.setImageBitmap(result);
         }
     }
+
+    
 
 }
