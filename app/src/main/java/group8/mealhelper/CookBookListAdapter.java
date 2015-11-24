@@ -69,7 +69,7 @@ import group8.mealhelper.models.Meal;
         @Override
         protected Bitmap doInBackground(String... params){
             BitmapFactory.Options options = new BitmapFactory.Options();
-            options.inSampleSize = 30;
+            options.inSampleSize = 32;
             Bitmap bitmap = BitmapFactory.decodeFile(params[0], options);
             return  bitmap;
         }

@@ -7,6 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
@@ -66,6 +67,7 @@ public class EditMealFragment extends Fragment implements View.OnClickListener {
     EditText mRecipeField;
     ListView mIngredientListView;
     IngredientListAdapter mListAdapter;
+    ShareButton mShareButton;
     List<Ingredient> mIngredientList = new ArrayList<>();
     Spinner mUnitSpinner;
     CheckBox mCheckBox = null;
@@ -93,11 +95,10 @@ public class EditMealFragment extends Fragment implements View.OnClickListener {
         mMealNameField.setText(mTempMeal.getName());
         Button cameraButton = (Button) mView.findViewById(R.id.editMeal_cameraButton);
         cameraButton.setOnClickListener(this);
+
         mImageView = (ImageView) mView.findViewById(R.id.editMeal_imageView);
-        BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inSampleSize = 2;
-        Bitmap bitmap = BitmapFactory.decodeFile(mTempMeal.getPathToPic(), options);
-        mImageView.setImageBitmap(bitmap);
+        new setPicTask(mImageView).execute();
+
         mIngredientField = (EditText) mView.findViewById(R.id.editMeal_ingredientTable_editText);
         mIngredientAmountField = (EditText) mView.findViewById(R.id.editMeal_ingredientTable_editText2);
         mUnitSpinner = (Spinner) mView.findViewById(R.id.editMeal_ingredientTable_spinner);
@@ -129,6 +130,12 @@ public class EditMealFragment extends Fragment implements View.OnClickListener {
         Button submit = (Button) mView.findViewById(R.id.editMeal_submitButton);
         submit.setOnClickListener(this);
 
+
+        mShareButton = (ShareButton) mView.findViewById(R.id.editMeal_share_btn);
+
+
+
+
         /*
         ShareLinkContent content = new ShareLinkContent.Builder()
                 .setContentUrl(Uri.parse("https://developers.facebook.com"))
@@ -136,15 +143,15 @@ public class EditMealFragment extends Fragment implements View.OnClickListener {
                 */
 
 
-        Bitmap image = BitmapFactory.decodeFile(mTempMeal.getPathToPic());
-        SharePhoto photo = new SharePhoto.Builder()
-                .setBitmap(image)
-                .build();
-        SharePhotoContent content = new SharePhotoContent.Builder()
-                .addPhoto(photo)
-                .build();
-        ShareButton shareButton = (ShareButton) mView.findViewById(R.id.editMeal_share_btn);
-        shareButton.setShareContent(content);
+//        Bitmap image = BitmapFactory.decodeFile(mTempMeal.getPathToPic());
+//        SharePhoto photo = new SharePhoto.Builder()
+//                .setBitmap(image)
+//                .build();
+//        SharePhotoContent content = new SharePhotoContent.Builder()
+//                .addPhoto(photo)
+//                .build();
+//        ShareButton shareButton = (ShareButton) mView.findViewById(R.id.editMeal_share_btn);
+//        shareButton.setShareContent(content);
 
         return mView;
     }
@@ -165,7 +172,7 @@ public class EditMealFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent cameraIntent) {
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_CAPTURED) {
-            setPic();
+            new setPicTask(mImageView).execute();
         }
     }
 
@@ -193,30 +200,10 @@ public class EditMealFragment extends Fragment implements View.OnClickListener {
             mealDir.mkdir();
         }
         File image = File.createTempFile(imageFileName, ".jpg", mealDir);
-        mCurrentPhotoPath = image.getAbsolutePath();
+        mTempMeal.setPathToPic(image.getAbsolutePath());
         return image;
     }
 
-    private void setPic() {
-        // Get the dimensions of the View
-        int targetW = mImageView.getWidth();
-        int targetH = mImageView.getHeight();
-        // Get the dimensions of the bitmap
-        BitmapFactory.Options bmOptions = new BitmapFactory.Options();
-        bmOptions.inJustDecodeBounds = true;
-        BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
-        int photoW = bmOptions.outWidth;
-        int photoH = bmOptions.outHeight;
-        // Determine how much to scale down the image
-        int scaleFactor = Math.min(photoW / targetW, photoH / targetH);
-        // Decode the image file into a Bitmap sized to fill the View
-        bmOptions.inJustDecodeBounds = false;
-        bmOptions.inSampleSize = scaleFactor;
-        bmOptions.inPurgeable = true;
-        Bitmap bitmap = BitmapFactory.decodeFile(mCurrentPhotoPath, bmOptions);
-        mImageView.setImageBitmap(bitmap);
-        mTempMeal.setPathToPic(mCurrentPhotoPath);
-    }
 
     private void ingredientCheck() {
         mTempIngredient.setName(mIngredientField.getText().toString());
@@ -302,4 +289,40 @@ public class EditMealFragment extends Fragment implements View.OnClickListener {
             toast.show();
         }
     }
+    private class setPicTask extends AsyncTask<String,Void,Bitmap> {
+        ImageView mImageView;
+        public setPicTask(ImageView imageView){
+            this.mImageView = imageView;
+        }
+        @Override
+        protected void onPreExecute(){
+
+        }
+
+        @Override
+        protected Bitmap doInBackground(String... params){
+            BitmapFactory.Options bmOptions = new BitmapFactory.Options();
+            bmOptions.inJustDecodeBounds = true;
+            BitmapFactory.decodeFile(mTempMeal.getPathToPic(), bmOptions);
+            bmOptions.inJustDecodeBounds = false;
+            bmOptions.inSampleSize = 4;
+            bmOptions.inPurgeable = true;
+            Bitmap bitmap = BitmapFactory.decodeFile(mTempMeal.getPathToPic(), bmOptions);
+            return  bitmap;
+        }
+
+        @Override
+        protected void onPostExecute(Bitmap result){
+            super.onPostExecute(result);
+            SharePhoto photo = new SharePhoto.Builder()
+                    .setBitmap(result)
+                    .build();
+            SharePhotoContent content = new SharePhotoContent.Builder()
+                    .addPhoto(photo)
+                    .build();
+            mShareButton.setShareContent(content);
+            mImageView.setImageBitmap(result);
+        }
+    }
+
 }
