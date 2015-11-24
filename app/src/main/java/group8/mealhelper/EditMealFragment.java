@@ -306,6 +306,6 @@ public class EditMealFragment extends Fragment implements View.OnClickListener {
         }
     }
 
-    
+
 
 }
