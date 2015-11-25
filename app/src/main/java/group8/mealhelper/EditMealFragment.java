@@ -180,7 +180,9 @@ public class EditMealFragment extends Fragment implements View.OnClickListener {
         return image;
     }
 
-
+/*
+validates ingredient before saving to DB
+ */
     private void ingredientCheck() {
         EditText ingredientField = (EditText) mView.findViewById(R.id.editMeal_ingredientTable_editText);
         mTempIngredient.setName(ingredientField.getText().toString());
@@ -269,7 +271,9 @@ public class EditMealFragment extends Fragment implements View.OnClickListener {
             toast.show();
         }
     }
-
+    /*
+    Async task to get local image file is not done on the main thread
+     */
     private class setPicTask extends AsyncTask<String,Void,Bitmap> {
         ImageView mImageView;
         public setPicTask(ImageView imageView){

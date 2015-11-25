@@ -37,6 +37,7 @@ import group8.mealhelper.models.Ingredient;
 
 /**
  * Created by curtis on 10/16/15.
+ * Home fragment handles button presses to new screens as well as facebook login
  */
 public class HomeFragment extends Fragment implements View.OnClickListener {
 
@@ -59,8 +60,6 @@ public class HomeFragment extends Fragment implements View.OnClickListener {
         weeklyButton.setOnClickListener(this);
         Button shoppingButton = (Button) v.findViewById(R.id.home_shoppingListButton);
         shoppingButton.setOnClickListener(this);
-
-
         LoginButton loginButton = (LoginButton) v.findViewById(R.id.login_button);
         loginButton.setReadPermissions("user_friends");
         // If using in a fragment

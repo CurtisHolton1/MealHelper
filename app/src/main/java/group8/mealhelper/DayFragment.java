@@ -150,4 +150,5 @@ public class DayFragment extends Fragment implements View.OnClickListener{
         mDinnerMealView.setVisibility(View.VISIBLE);
     }
 
+
 }
